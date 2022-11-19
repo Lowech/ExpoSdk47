@@ -16,7 +16,7 @@ export default  function LevelSelectionNavigation({navigation}) {
   
   return (
     <View  style={styles.MainPageMain}>
-      <Stack.Navigator initialRouteName="LevelSelectionMemory" screenOptions={{  
+      <Stack.Navigator initialRouteName="levelSelectionMemory" screenOptions={{  
         headerMode: 'screen',
         headerStyle: { height: 32,},
         headerTransparent: true ,

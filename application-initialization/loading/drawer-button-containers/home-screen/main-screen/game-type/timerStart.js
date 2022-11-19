@@ -46,6 +46,7 @@ export default  function TimerStart() {
         if(sec === 1){
           setTimeout(()=>setColorTimer( 'lime' ),1000);
           setTimeout(()=>setSec("start"),1000);
+          setTimeout(()=>setDispalyNone(-1),2000);
         }
 
         switch (sec) {
@@ -77,6 +78,7 @@ export default  function TimerStart() {
       left: "31%",
       zIndex: dispalyNone,
       
+      
     },
     timer:{
       color: colorTimer,
@@ -88,7 +90,8 @@ export default  function TimerStart() {
       width: 300,
       height: 140,
       textAlign: 'center',
-      textAlignVertical: 'center',  
+      textAlignVertical: 'center', 
+     
     }
 
   });
