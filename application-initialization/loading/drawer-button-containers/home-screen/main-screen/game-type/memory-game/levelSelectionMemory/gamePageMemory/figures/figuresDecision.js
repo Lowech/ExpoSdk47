@@ -51,7 +51,7 @@ export default  function FiguresDecision({navigation}) {
     dispatch(nameGameСhange('figures'));
 
     const [elementState, setElementState] = useState("start");
-    const [level, setLevel] = useState(0);
+    const [itapGames, setItapGames] = useState('ballFiguresZero');
     const [numberPrism, setNumberPrism] = useState(0);
     const [numberRhombus, setNumberRhombus] = useState(0);
     const [numberRect, setNumberRect] = useState(0);
@@ -317,7 +317,7 @@ useEffect(()=>{
     navigation.navigate("MessageGameResultat")
     
   }else{
-    setLevel(0)
+    setItapGames('ballFiguresZero')
   }
 },[isTrueFalse])
 
@@ -325,16 +325,16 @@ const isFocused = useIsFocused();
 useEffect(()=>{
   if(isFocused === true){
     clickElementFiguresMass= [];
-    setLevel(1)
+    setItapGames('ballFiguresOne')
     
   }else{
-    setLevel(0)
+    setItapGames('ballFiguresZero')
   }
 },[isFocused])
 
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/figuresFon.png')} resizeMode="cover" style={styles.containerImg}> 
-        <Timer startTimer={elementState} level={level} clickElementMass={clickElementFiguresMass} />
+        <Timer startTimer={elementState} ballFiguresOne={itapGames} clickElementMass={clickElementFiguresMass} />
         <AlertTextMission text={'figures'}/>
         <ScrollView style={styles.ScrollView} persistentScrollbar={true}>
         

@@ -6,14 +6,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useSelector, useDispatch } from 'react-redux';
 import { timeGameTrue, incrementByAmount } from '../../../../../../redux/counterSlice';
 
-
-  const windowWidth = Dimensions.get('screen').width;
-  const windowHeight = Dimensions.get('screen').height;
   let massResult=[];
 
 export default  function Timer(props) {
   
-  const isTrueFalse = useSelector(state => state.counter.timeGameEnd)
+  const isTrueFalse = useSelector(state => state.counter.timeGameEnd);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   
@@ -54,33 +51,38 @@ export default  function Timer(props) {
       }
       if(sec<=0 ){
         
-         
-        if(props.level === 1){
+//Проверка результата в игре на память  'ball'  'figures'       
+        if(props.ballFiguresOne === 'ballFiguresOne' ){
           
           if(props.clickElementMass !== undefined){
             massResult.push(props.clickElementMass);
           }
-          
+        
           dispatch(incrementByAmount(massResult))
           massResult=[];
           dispatch(timeGameTrue())
         }
+//Отправка значения true для вызова компонента MessageGameResultat для проверки результата игра  'wordMission' 
+        if(props.nameMission === 'wordMission' ){    
+          dispatch(timeGameTrue());
+        }
         return;
       }
-      
+//
         setTimeout(()=>setSec(sec-1),1000);
       }
     
-  },[props.startTimer,fadeAnim,sec,props.level])
+  },[props.startTimer,fadeAnim,sec,props.ballFiguresOne])
 
+ //Проверка результата в игре на память  'ball'  'figures'        
  useEffect(()=>{
-  
-  if(props.massElement !== undefined && props.level2 === 2){
+ 
+  if(props.massElement !== undefined && props.ballFiguresTwo === 'ballFiguresTwo'){
     massResult.push(props.massElement);
   }
   
- },[props.level2])
-  
+ },[props.ballFiguresTwo])
+//
   const styles = StyleSheet.create({
     container:{
       height: 55,

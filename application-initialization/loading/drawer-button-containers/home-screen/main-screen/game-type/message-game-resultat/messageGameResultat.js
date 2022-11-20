@@ -22,7 +22,7 @@ export default function MessageGameResultat({navigation}) {
   const docUsers = doc(dbF, "users", auth.currentUser.uid);
   const [hiddenVisible, setHiddenVisible] = useState('flex');
   const rezultGame = useSelector(state => state.counter.stateRezultat);
-  const nGame = useSelector(state => state.counter.nameGame)
+  const nGame = useSelector(state => state.counter.nameGame);
   const [textRezult, setTextRezult] = useState();
   const [textColorRezult, setTextColorRezult] = useState("#6495ED");
   const [usersVictory, setUsersVictory] = useState( ()=>{
@@ -47,55 +47,54 @@ export default function MessageGameResultat({navigation}) {
       }
   
   },[])
-  /*const sound = require('../../../../../../../assets/audio/bulkBit.wav');
-  async function playSound() {
-    await  Audio.Sound.createAsync(
-      sound,
-      { shouldPlay: true }
-    ).then((res)=>{
-      res.sound.setOnPlaybackStatusUpdate((status)=>{
-        if(!status.didJustFinish) return;
-        console.log(status);
-        res.sound.unloadAsync()
-        .catch((error)=>{
-          console.log(error)
-        });
-      });
-    })
-    .catch((error)=>{
-      console.log(error)
-    });
-  }*/
-  
+ 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   useEffect(()=>{
     if(isFocused === false){
       dispatch(timeGameFalse());
+      
       async function updateUsersDoc(){
    
         if(rezultGame === 'true' ){
         
           await  updateDoc(docUsers, {
             numberGames: usersVictory.numberGames + 1,
-            remembering: usersVictory.remembering + 1,
-            victory: usersVictory.victory + 1,
-            
+            victory: usersVictory.victory + 1, 
           }); 
+          if(nGame === 'figures' || nGame === 'ball'){
+            await  updateDoc(docUsers, {
+              remembering: usersVictory.remembering + 1,
+            });
+          }
+          if(nGame === 'wordMission'){
+            await  updateDoc(docUsers, {
+              smartest: usersVictory.smartest + 1,
+            });
+          }
         }
         else{
           await updateDoc(docUsers, {
             numberGames: usersVictory.numberGames + 1,
-            remembering: usersVictory.remembering - 1,
             victory: usersVictory.victory - 1,
             
           });
+          if(nGame === 'figures' || nGame === 'ball'){
+            await  updateDoc(docUsers, {
+              remembering: usersVictory.remembering - 1,
+            });
+          }
+          if(nGame === 'wordMission'){
+            await  updateDoc(docUsers, {
+              smartest: usersVictory.smartest - 1,
+            });
+          }
         }
       }
     updateUsersDoc();
     }
-    //console.log(usersVictory)
+    
   },[isFocused])
 
     const styles = StyleSheet.create({
@@ -176,6 +175,9 @@ export default function MessageGameResultat({navigation}) {
     if(nGame === 'figures'){
       navigation.navigate('Figures');
     }
+    if(nGame === 'wordMission'){
+      navigation.navigate('WordMission');
+    }
   }
   function goNextLevel(){
     audioClick();
@@ -184,7 +186,10 @@ export default function MessageGameResultat({navigation}) {
     }
     if(nGame === 'figures'){
       navigation.navigate('Figures');
-    }  
+    } 
+    if(nGame === 'wordMission'){
+      navigation.navigate('WordMission');
+    } 
     dispatch(numberLevelChangePlus());
   }
 

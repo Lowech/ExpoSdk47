@@ -23,21 +23,21 @@ let massElementNew=[];
 
 export default  function Figures({navigation}) {
   const isFocused = useIsFocused();
-  const [level, setLevel] = useState(3);
+  const [itapGames, setItapGames] = useState('ballFiguresThree');
   const [elementState, setElementState] = useState();
   const [massColor, setMassColor] = useState();
   const numberLevel = useSelector(state => state.counter.numberLevel);
 
   useEffect(()=>{
     if(isFocused === true){
-      setLevel(3);
+      setItapGames('ballFiguresThree');
       massNull=[];
       massElementNew=[];
       
     setMassColor(()=>{
       for (let it=0; it <= 30; it++) {
         
-        if(it <= 26-numberLevel){
+        if(it <= 28-numberLevel){
           massNull.push(
             <View key={Math.random(massElementColor.toString().length*1)}
               style={[styles.elem]}>
@@ -77,21 +77,20 @@ export default  function Figures({navigation}) {
       }
     });
     
-    setLevel(2)
+    setItapGames('ballFiguresTwo')
   }
   },[isFocused])
   
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/figuresFon.png')} resizeMode="cover" style={styles.containerImg}> 
-        <Timer startTimer={elementState} level2={level} massElement={massElementNew} />
-        <View  style={styles.MainPageMain}>
-        
+        <View style={styles.container}>
+          <View  style={styles.MainPageMain}>
             {massColor}
-            
           </View>
+        </View>
           <AlertTextMission hiden={"8"} text={'1'}/>
-       
-        <TimerStart />
+          <Timer startTimer={elementState} ballFiguresTwo={itapGames} massElement={massElementNew} />
+          <TimerStart />
       </ImageBackground>
     );
   }
@@ -102,6 +101,16 @@ export default  function Figures({navigation}) {
       height: '100%',
       display: "flex", 
       
+    },
+    container: {   
+      position: 'absolute',
+      zIndex: 0,
+      display: 'flex', 
+      width: "100%",
+      height: "100%",
+      backgroundColor: 'transparent',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     MainPageMain:{
       flexWrap: 'wrap',

@@ -42,7 +42,7 @@ export default  function BallsDecision({navigation}) {
     dispatch(nameGameСhange('ball'));
 
     const [elementState, setElementState] = useState("start");
-    const [level, setLevel] = useState(0);
+    const [itapGames, setItapGames] = useState('ballFiguresZero');
     const [numberRed, setNumberRed] = useState(0);
     const [numberBlue, setNumberBlue] = useState(0);
     const [numberYellow, setNumberYellow] = useState(0);
@@ -308,7 +308,7 @@ useEffect(()=>{
     navigation.navigate("MessageGameResultat")
     
   }else{
-    setLevel(0)
+    setItapGames('ballFiguresZero')
   }
 },[isTrueFalse])
 
@@ -316,15 +316,15 @@ const isFocused = useIsFocused();
 useEffect(()=>{
   if(isFocused === true){
     clickElementColor= [];
-    setLevel(1)
+    setItapGames('ballFiguresOne')
     
   }else{
-    setLevel(0)
+    setItapGames('ballFiguresZero')
   }
 },[isFocused])
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/balls.png')} resizeMode="cover" style={styles.containerImg}> 
-        <Timer startTimer={elementState} level={level} clickElementMass={clickElementColor} />
+        <Timer startTimer={elementState} ballFiguresOne={itapGames} clickElementMass={clickElementColor} />
         <ScrollView style={styles.ScrollView} persistentScrollbar={true}>
          <View  style={styles.MainPageMain}>
            <View style={styles.containerItems} >

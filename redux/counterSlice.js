@@ -70,7 +70,7 @@ export const counterSlice = createSlice({
           update(starCountRef, {timbon: sumPointer + 1});
           state.stateRezultat = "true";
         }
-     
+        
     },
     positionStatusAbsolute: state => {
       state.positionStatus = "absolute";

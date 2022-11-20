@@ -25,6 +25,9 @@ export default  function AlertTextMission(props) {
         case 'figures':
             setTextMission( 'Укажите точное количество всех фигур, увиденных ранее!' );
           break;
+        case 'text':
+            setTextMission( 'Какие по вашему мнению элементы тут лишние? Выделите их касанием!' );
+        break;  
       }
     })
   const interpolateHidden=  alertHidden.interpolate({

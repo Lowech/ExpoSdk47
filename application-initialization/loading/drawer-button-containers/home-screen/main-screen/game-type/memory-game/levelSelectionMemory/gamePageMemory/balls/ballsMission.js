@@ -19,7 +19,7 @@ let massElementNew=[];
 export default  function Balls({navigation}) {
   
   const isFocused = useIsFocused();
-  const [level, setLevel] = useState(3);
+  const [itapGames, setItapGames] = useState('ballFiguresThree');
   const [elementState, setElementState] = useState();
   const [massColor, setMassColor] = useState();
   const numberLevel = useSelector(state => state.counter.numberLevel);
@@ -27,7 +27,7 @@ export default  function Balls({navigation}) {
   useEffect(()=>{
   
     if(isFocused === true){
-      setLevel(3);
+      setItapGames('ballFiguresThree');
       massNull=[];
       massElementNew=[];
       
@@ -74,23 +74,25 @@ export default  function Balls({navigation}) {
       }
     });
     
-    setLevel(2)
+    setItapGames('ballFiguresTwo')
   }
   },[isFocused])
  
   
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/balls.png')} resizeMode="cover" style={styles.containerImg}> 
-        <Timer startTimer={elementState} level2={level} massElement={massElementNew} />
         
         
+        <View style={styles.container}>
           <View  style={styles.MainPageMain}>
             {massColor}
          
          
           <Button title="назад" onPress={() => navigation.navigate('BallsDecision')}></Button>
           </View>
+          </View>
           <AlertTextMission hiden={"8"} text={'1'}/>
+          <Timer startTimer={elementState} ballFiguresTwo={itapGames} massElement={massElementNew} />
           <TimerStart />
       </ImageBackground>
     );
@@ -104,9 +106,14 @@ export default  function Balls({navigation}) {
       backgroundColor: '#d058c4',
     },
     container: {    
-      width: "25%",
-      height: "30%",
+      position: 'absolute',
+      zIndex: 0,
+      display: 'flex', 
+      width: "100%",
+      height: "100%",
       backgroundColor: 'transparent',
+      justifyContent: 'center',
+      alignItems: 'center',
    
     },
     MainPageMain:{

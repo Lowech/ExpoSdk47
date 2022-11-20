@@ -5,6 +5,7 @@ import { initializeApp } from 'firebase/app';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import  {firebaseConfig}  from '../../../../../firebaseConfig';
 import { getDatabase, ref, onValue} from "firebase/database";
+import { useEffect } from 'react';
 
   initializeApp(firebaseConfig);
   const auth = getAuth();
@@ -16,8 +17,8 @@ export default function PointsName() {
   const [count, setCount] = useState(borderColorRight);
   const [username, setUsername] = useState();
   const [timbon, setTimbon] = useState();
- 
-    onAuthStateChanged(auth, user => {
+ useEffect(()=>{
+  onAuthStateChanged(auth, user => {
     if (user) {
       const uid = user.uid;
       const starCountRef =  ref(db, `users/${auth.currentUser.uid}`);
@@ -33,6 +34,8 @@ export default function PointsName() {
       console.log('error')
     }
   }); 
+ },[])
+   
   
 const styles = StyleSheet.create({
 LoginRegister:{

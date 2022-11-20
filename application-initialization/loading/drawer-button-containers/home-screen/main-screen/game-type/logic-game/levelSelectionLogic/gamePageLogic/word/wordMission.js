@@ -1,126 +1,77 @@
 import * as React from 'react';
-import {useState,useEffect,useMemo} from 'react';
+import {useState,useEffect} from 'react';
 import {useIsFocused } from '@react-navigation/native';
-import { StyleSheet, View, Button,ImageBackground, Dimensions,Text,Pressable } from 'react-native';
-import MassWord from './massWord';
+import { StyleSheet, View,ImageBackground, Dimensions} from 'react-native';
+import WordMass from './wordMass';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { nameGame,numberLevelChangePlus,numberLevelChangeMinus } from '../../../../../../../../../../redux/counterSlice';
+import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus } from '../../../../../../../../../../redux/counterSlice';
 
 import AlertTextMission from '../../../../alertFail/alertTextMission/alertTextMission';
 import TimerStart from '../../../../timerStart';
 import Timer from '../../../../timer';
-import { current } from '@reduxjs/toolkit';
 
-
-let massNull=[];
-let massElementNew=[]; 
-
- 
 
 export default  function WordMission({navigation}) {
 
- 
-  
 
-  const isFocused = useIsFocused();
-  const [level, setLevel] = useState(3);
-  const [elementState, setElementState] = useState();
-  const [massColor, setMassColor] = useState();
-  
-  
-  const massIsNumber = [0,1,2];
-  const [numberMass, setNumberMass] = useState(Math.floor(Math.random().toString()*massIsNumber.length));
-  
-  
+// назначения названия игры
+const dispatch = useDispatch();
+//
+//фокус экрана
+const isFocused = useIsFocused();
+//запуск таймера
+const [elementState, setElementState] = useState();
+//
+//Получения номера уровня
+const numberLevel = useSelector(state => state.counter.numberLevel);
+//количество элементов true
+const [colElemTrue, setColElemTrue] = useState(3);
+//количество элементов true
+const [colElemFalse, setColElemFalse] = useState(1);
 
-  const numberLevel = useSelector(state => state.counter.numberLevel);
 
- let it = 0; 
 
-  useEffect(()=>{
-    if(numberMass !=undefined){
-    
-    if(isFocused === true){
-      setLevel(3);
-      massNull=[];
-      massElementNew=[];
-      
-    setMassColor(()=>{
-      
-      
-      for (; it <= 24; it++) {
-        
-              
-        if(it <= 24 - 8 -numberLevel){
-          massNull.push(
-            <View key={Math.random(24*1)}
-              style={[styles.elem]}>
-            </View> 
-          )
-        }
-        if(it > 24 -4 - numberLevel){
-          
-          massNull.push(
-            <View key={Math.random(24*1)}style={styles.elem}> 
-                <MassWord colElem={5} numMass={numberMass} key={Math.random(24*1)}
-              /> 
-            </View> 
-          );
-        }
-      }
-      
-      return massNull.sort(() => Math.random() - 0.4); 
-      
-    })
-      setTimeout(()=>{setElementState("start")},5000)
-      //setTimeout(()=>{navigation.navigate('BallsDecision')},21000)
-
-    }
-    else{
-      setElementState("stop");
-    }
+//Определяет размер экрана и тем саммым колличество элементов на экране
+let widthWind=  Dimensions.get('window');
+const [colBlock, setColBlock] = useState(21);
+useEffect(()=>{
+  dispatch(nameGameСhange('wordMission'));
+  if(widthWind.width > 760){
+    return setColBlock( 21);
+  }else{
+   return  setColBlock( 10);
   }
-  },[isFocused,numberMass])
-
-
-  
-  useEffect(()=>{
-    massElementNew=[];
-    if(isFocused === false){
-      
-        massNull.forEach(element => {
-          
-      if(element.props.children){
-        
-        massElementNew.push(element.props.children.props.style) 
-        
-      }
-    });
+},[widthWind]);
+//
+useEffect(()=>{
     
-    setLevel(2)
+  if(isFocused === true){
+    
+//запуск таймера в зависимости от уровня  
+  if(numberLevel<= 1){
+    setTimeout(()=>{setElementState("start")},5000);
+  }else{
+    setElementState("start");
   }
-  },[isFocused])
- 
- 
+  }
+  else{
+    setElementState("stop");
+  }
+//  
+},[isFocused])  
+
+
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/wordFoon.png')} resizeMode="cover" style={styles.containerImg}> 
-        
-        
-        <View  style={styles.container}>
-        
-          <View  style={styles.MainPageMain}>
-         
-          <MassWord colElemTrue={level} colElemFalse={1}/>
-            
-          <Button title="назад" onPress={() => navigation.navigate('levelSelectionLogic')}></Button>
+        <View style={styles.container}>
+          <View style={styles.MainPageMain}>
+            <WordMass colElemTrue={colElemTrue} colElemFalse={colElemFalse}  colBlock={colBlock} navigation={{navigation}}/>
           </View>
-          </View>
-          <Timer startTimer={elementState} level2={level} massElement={massElementNew} />
-          
-          <AlertTextMission hiden={"8"} text={'1'}/>
-          
+        </View>
+          <AlertTextMission hiden={"8"} text={'text'}/>
           <TimerStart />
+          <Timer startTimer={elementState} nameMission={'wordMission'}/>
       </ImageBackground>
     );
   }
@@ -130,7 +81,7 @@ export default  function WordMission({navigation}) {
       width: '100%',
       height: '100%',
       display: "flex",
-      backgroundColor: '#d058c4',
+      backgroundColor: 'yellow',
       
     },
     container: {   
@@ -142,17 +93,16 @@ export default  function WordMission({navigation}) {
       backgroundColor: 'transparent',
       justifyContent: 'center',
       alignItems: 'center',
-   
     },
-    MainPageMain:{
-      display: 'flex',
-      flexWrap: 'wrap',
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      width: '95%',
-      height: '85%',
-      backgroundColor: 'transparent', 
-    },
+      MainPageMain:{
+        display: 'flex',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '95%',
+        height: '85%',
+        backgroundColor: 'transparent', 
+      },
     elem:{
       display: 'flex',
       justifyContent: 'center',
