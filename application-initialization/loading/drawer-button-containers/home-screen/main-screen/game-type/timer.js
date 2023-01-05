@@ -4,13 +4,13 @@ import { StyleSheet, Text, View, TouchableOpacity,Button , Dimensions,Animated }
 import {useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useSelector, useDispatch } from 'react-redux';
-import { timeGameTrue, incrementByAmount } from '../../../../../../redux/counterSlice';
+import { timeGameTrue, timeGameFalse } from '../../../../../../redux/counterSlice';
 
-  let massResult=[];
+  
 
 export default  function Timer(props) {
   
-  const isTrueFalse = useSelector(state => state.counter.timeGameEnd);
+  
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   
@@ -21,6 +21,7 @@ export default  function Timer(props) {
   useEffect(()=>{
     if(isFocused === true){
       setSec(15);
+      dispatch(timeGameFalse());
     }else{
       Animated.timing(fadeAnim, {
         toValue: -55,
@@ -30,14 +31,18 @@ export default  function Timer(props) {
     }
   },[isFocused])
 
-  useEffect(()=>{
-    if(props.startTimer === "start"){
-
+useEffect(()=>{
+  if(props.startTimer === "start"){
+//действия таймера
+    if(sec === 0)return;
+      setTimeout(()=>setSec(sec-1),1000);
+//анимация таймера      
       Animated.timing(fadeAnim, {
         toValue: -5,
         duration: 500,
         useNativeDriver: false
       }).start()
+//изменения цввета таймера
       switch (sec) {
         case 10:
           setColorTimer( 'yellow' );
@@ -48,41 +53,19 @@ export default  function Timer(props) {
         case 15:
           setColorTimer( 'lime' );
           break;
-      }
-      if(sec<=0 ){
-        
-//Проверка результата в игре на память  'ball'  'figures'       
-        if(props.ballFiguresOne === 'ballFiguresOne' ){
-          
-          if(props.clickElementMass !== undefined){
-            massResult.push(props.clickElementMass);
-          }
-        
-          dispatch(incrementByAmount(massResult))
-          massResult=[];
-          dispatch(timeGameTrue())
-        }
-//Отправка значения true для вызова компонента MessageGameResultat для проверки результата игра  'wordMission' 
-        if(props.nameMission === 'wordMission' ){    
-          dispatch(timeGameTrue());
-        }
-        return;
-      }
-//
-        setTimeout(()=>setSec(sec-1),1000);
-      }
-    
-  },[props.startTimer,fadeAnim,sec,props.ballFiguresOne])
+    }
+  }
+},[props.startTimer,sec])
 
- //Проверка результата в игре на память  'ball'  'figures'        
- useEffect(()=>{
  
-  if(props.massElement !== undefined && props.ballFiguresTwo === 'ballFiguresTwo'){
-    massResult.push(props.massElement);
+useEffect(()=>{
+ 
+  if(sec === 0){
+    setTimeout(()=>dispatch(timeGameTrue()),500);
   }
   
- },[props.ballFiguresTwo])
-//
+ },[sec])
+ 
   const styles = StyleSheet.create({
     container:{
       height: 55,

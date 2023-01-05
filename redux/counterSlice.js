@@ -13,13 +13,23 @@ let sumPointer;
 export const counterSlice = createSlice({
   name: 'counter',
   initialState: {
+//повления и исчезновение полей регистрации и входа
     value: 'none',
     value1: 'none',
+//окончание и начала таймера
     timeGameEnd: false,
-    stateRezultat: "",
+//результат уровня
+    stateRezultat: '',
+//
     positionStatus: "relative",
-    numberLevel: 1,
-    nameGame: ''
+//уровень сложности
+    numberLevel: 3,
+//названия игры
+    nameGame: '',
+//промежуточный результат между экранами
+    intermediateResultMemory: '',
+//управления появлением AlertTextMission в уровнях
+    numberGame: 1
   },
   reducers: {
     hidingOpeningRegistration: state => {
@@ -44,14 +54,16 @@ export const counterSlice = createSlice({
     timeGameFalse: state => {
       state.timeGameEnd = false;
     },
+//проверка результатов уровня
     incrementByAmount: (state, action) => {
       let resultSecurity=[];
       const starCountRef = ref(db, `users/${auth.currentUser.uid}`);
       onValue(starCountRef, (snapshot) => {
         const data = Object(snapshot.val());
         sumPointer = data.timbon;
-      //console.log(sumPointer);
+      
       }); 
+      
       action.payload[0].forEach(element => {
         
         if(action.payload[1].includes(element) === true){
@@ -62,7 +74,11 @@ export const counterSlice = createSlice({
           //console.log(element + " " + "false")
         } 
       }); 
-      
+
+          if(action.payload[0].length < action.payload[1].length){
+            resultSecurity.push("false");
+          }
+
         if(resultSecurity.includes("false")){
           update(starCountRef, {timbon: sumPointer - 1});
           state.stateRezultat = "false";
@@ -82,11 +98,20 @@ export const counterSlice = createSlice({
       state.numberLevel += 1;
     },
     numberLevelChangeMinus: state => {
-      state.numberLevel = 1;
+      state.numberLevel = 3;
     },
     nameGameСhange: (state, action) =>  {
       state.nameGame = action.payload;
-    }
+    },
+    stateRezultatZero:(state)=>{
+      state.stateRezultat = '';
+    },
+    intermediateResultMemoryPush: (state, action) =>  {
+      state.intermediateResultMemory = action.payload;
+    },
+    numberGameСhange: (state, action) =>  {
+      state.numberGame = action.payload;
+    },
   }
 })
 
@@ -102,6 +127,9 @@ export const {
   incrementByAmount,
   numberLevelChangePlus,
   numberLevelChangeMinus,
+  numberGameСhange,
+  stateRezultatZero,
+  intermediateResultMemoryPush,
   nameGameСhange } = counterSlice.actions
 
 export default counterSlice.reducer

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-
+import audioClick from '../../../../audio-components/audioClick.js';
 import { StyleSheet, Text, View, TouchableOpacity,FlatList ,Animated,ImageBackground } from 'react-native';
 import  ProgressList  from './ProgressList';
 
@@ -8,20 +8,20 @@ export default  function Progress() {
   
     const DATA = [
         {
-          id: "больше всех побед",
-          title: "больше всех побед",
+          id: "победоносцы",
+          title: "победоносцы",
         },
         {
-          id: "больше всех играет",
-          title: "больше всех играет",
+          id: "неиссякаемый энтузиазм",
+          title: "неиссякаемый энтузиазм",
         },
         {
-          id: "самая хорошая память",
-          title: "самая хорошая память",
+          id: "феноменальная память",
+          title: "феноменальная память",
         },
         {
-          id: "самый смышленый",
-          title: "самый смышленый",
+          id: "исключительная сообразительность",
+          title: "исключительная сообразительность",
         },
       ];
 
@@ -32,19 +32,22 @@ export default  function Progress() {
       );
 
       const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "transparent";
+        const backgroundColor = item.id === selectedId ? "rgba(105, 105, 105,0.5)" : "transparent";
         const color = item.id === selectedId ? 'white' : 'rgba(105, 105, 105,0.8)';
         return (
           <Item
             item={item}
-            onPress={() => setSelectedId(item.id)}
+            onPress={() => {
+              audioClick();
+              setSelectedId(item.id);
+            }}
             textColor={{ color }}
             backgroundColor={{ backgroundColor }}
           />
         );
       };
    
-    const [selectedId, setSelectedId] = useState("больше всех побед");
+    const [selectedId, setSelectedId] = useState("победоносцы");
     const fadeAnim = useRef(new Animated.Value(-50)).current;
 
     
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
   container:{
     height: '100%',
     width: '100%',
-    backgroundColor: '#6e3b6e',
+    backgroundColor: '#ff7c00',
     display: 'flex',
     justifyContent: 'flex-start',
     alignContent: 'center',
@@ -80,6 +83,8 @@ const styles = StyleSheet.create({
     padding: 10,
     height: 'auto',
     width: '100%',
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
     
   },
   containerItemsItemText:{

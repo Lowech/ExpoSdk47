@@ -4,8 +4,10 @@ import LevelSelectionLogic from './levelSelectionLogic'
 import { createStackNavigator,TransitionPresets } from '@react-navigation/stack';
 import MessageGameResultat from '../../message-game-resultat/messageGameResultat';
 import WordMission from './gamePageLogic/word/wordMission';
+import SortingMission from './gamePageLogic/sorting/sortingMission';
 import Menu from '../../../../menu/menu';
 import PointsName from '../../../../user-data/PointsName';
+
 
 const Stack = createStackNavigator();
 
@@ -25,6 +27,7 @@ export default  function LevelSelectionNavigation({navigation}) {
           <Menu menu={navigation}/>),
       }}>
         <Stack.Screen  name="WordMission" component={WordMission} options={{headerShown: false, ...TransitionPresets.FadeFromBottomAndroid}}/>
+        <Stack.Screen  name="SortingMission" component={SortingMission} options={{headerShown: false, ...TransitionPresets.FadeFromBottomAndroid}}/>
         
         <Stack.Screen  name="levelSelectionLogic" component={LevelSelectionLogic}/>  
         <Stack.Screen  name="MessageGameResultat" component={MessageGameResultat} options={{headerShown: false,...TransitionPresets.FadeFromBottomAndroid}}/>

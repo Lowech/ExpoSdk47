@@ -5,18 +5,25 @@ import { initializeApp } from 'firebase/app';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import  {firebaseConfig}  from '../../../../../firebaseConfig';
 import { getDatabase, ref, onValue} from "firebase/database";
+import {getFirestore , collection, addDoc,getDocs ,doc, query, where, orderBy, updateDoc } from "firebase/firestore"; 
 import { useEffect } from 'react';
+import {useIsFocused } from '@react-navigation/native';
+
 
   initializeApp(firebaseConfig);
   const auth = getAuth();
   const db = getDatabase();
-  const borderColorRight = 'red';
+  const dbF = getFirestore();
+  const collectionUsers = collection(dbF, "users");
   
 export default function PointsName() {
-  
-  const [count, setCount] = useState(borderColorRight);
+
+  const isFocused = useIsFocused();
   const [username, setUsername] = useState();
   const [timbon, setTimbon] = useState();
+  const [imgRang, setImgRang] = useState(require('../../../../../assets/img/Новичок.png'));
+  
+//проверка авторизации и выставления имени и количества тимбонов
  useEffect(()=>{
   onAuthStateChanged(auth, user => {
     if (user) {
@@ -29,14 +36,49 @@ export default function PointsName() {
     setUsername(data.username);
     setTimbon(data.timbon);
 
-   });   
+   });  
+
     } else {
       console.log('error')
     }
   }); 
  },[])
-   
-  
+ //проверка ранга и установка соответствующего иконки
+ useEffect(()=>{
+ async function getDocUser(){
+  const querySnapshotoo = await getDocs(collectionUsers);
+ 
+   querySnapshotoo.forEach((doc) => {
+     let  userData = doc.data()
+     
+     switch (userData.logickWordPart && userData.logickSortingPart && userData.memoryBallsPart && userData.memoryFiguresPart) {
+       case 10:
+         setImgRang(require('../../../../../assets/img/Упорный.png'));
+       break;
+       case 30:
+          setImgRang(require('../../../../../assets/img/Вундеркинд.png'));
+       break;
+       case 50:
+         setImgRang(require('../../../../../assets/img/ГибкийУм.png'));
+       break;
+       case 100:
+          setImgRang(require('../../../../../assets/img/Эрудит.png'));
+       break;
+       case 150:
+         setImgRang(require('../../../../../assets/img/Менталист.png'));
+       break;
+       case 200:
+          setImgRang(require('../../../../../assets/img/Виртуоз.png'));
+       break;
+       case 300:
+         setImgRang(require('../../../../../assets/img/Создатель.png'));
+       break;
+     }
+   }); 
+ }
+ getDocUser();
+},[isFocused])
+
 const styles = StyleSheet.create({
 LoginRegister:{
     display: 'flex',
@@ -53,15 +95,15 @@ LoginRegister:{
 },
 icons:{    
     backgroundColor: '#7B68EE',
-    borderRadius: 10,
-    borderColor: '#9ACD32',
+    borderRadius: 4,
+    borderColor: 'black',
     borderWidth: 2, 
-    width: 30,
-    height: 25,
+    width: 35,
+    height: 28,
     position : 'absolute',
     zIndex: 1,
-    top: 13,
-    left: 5,
+    top: 16,
+    left: 0,
     
 },
 username:{
@@ -74,7 +116,7 @@ username:{
   backgroundColor: '#7B68EE',
   borderBottomLeftRadius: 10, 
   borderBottomWidth: 1,
-  borderLeftWidth: 1,
+  borderLeftWidth: 2,
   borderColor: '#696969',
   fontFamily: 'sans-serif-light',
   textShadowColor: 'black',
@@ -101,20 +143,11 @@ timbon:{
     textShadowOffset:  { width: 1, height: 1 },
 } 
 });
-        
-        function colorСhangesBorderRight(){
-          if(count=='red' ){
-            setCount('green')
-          }
-          if(count=='green' ){ 
-            setCount('red')
-          }
-         }
          
   return (
     <View style={styles.LoginRegister}>
       <Text style={styles.username}>{username}</Text>
-        <Image style={styles.icons} source={require('./icons.png')}/>
+        <Image style={styles.icons} source={imgRang}/>
           <Text style={styles.timbon}>{timbon}t</Text>
     </View>
   );

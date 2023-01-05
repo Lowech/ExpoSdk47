@@ -2,8 +2,8 @@ import * as React from 'react';
 import {useState,useEffect} from 'react';
 import {useIsFocused } from '@react-navigation/native';
 import { StyleSheet, View,ImageBackground, Dimensions} from 'react-native';
-import WordMass from './wordMass';
-import audioClick from '../../../../../../../../../../audio-components/audioClick.js';
+import SortingMass from './sortingMass';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus } from '../../../../../../../../../../redux/counterSlice';
 
@@ -13,7 +13,7 @@ import Timer from '../../../../timer';
 
 
 
-export default  function WordMission({navigation}) {
+export default  function SortingMission({navigation}) {
 
 
 
@@ -28,59 +28,42 @@ const numberGame = useSelector(state => state.counter.numberGame);
 //Получения номера уровня
 const numberLevel = useSelector(state => state.counter.numberLevel);
 //количество элементов true
-const [colElemFalse, setColElemFalse] = useState();
-console.log(colElemFalse)
-console.log(numberLevel)
+const [colElemTrue, setColElemTrue] = useState(3);
+//количество элементов true
+const [colElemFalse, setColElemFalse] = useState(1);
+
 //Определяет размер экрана и тем саммым колличество элементов на экране
 let widthWind =  Dimensions.get('window');
-const [colBlock, setColBlock] = useState(18);
+const [colBlock, setColBlock] = useState(35);
 useEffect(()=>{
 // назначения названия игры
-  dispatch(nameGameСhange('wordMission'));
+  dispatch(nameGameСhange('sortingMission'));
   if(widthWind.width > 760){
-    return setColBlock(18);
+    return setColBlock(35);
   }else{
-   return  setColBlock(10);
+   return  setColBlock(20);
   }
 },[widthWind]);
 //
 useEffect(()=>{
     
   if(isFocused === true){
-    setColElemFalse(()=>{
-      if(numberLevel+1 === 5 || numberLevel+1 === 6)
-      {
-        return 2
-      }
-      else if(numberLevel+1 === 7 || numberLevel+1 === 8)
-      {
-        return 3
-      }
-      else if(numberLevel+1 === 9 || numberLevel+1 === 10)
-      {
-        return 4
-      }
-      else if(numberLevel+1 < 5)
-      {
-        return 1
-      }})
+    
 //запуск таймера в зависимости от уровня  
   if(numberGame === 1){
       setTimeout(()=>{setElementState("start")},5000);
     }else{
       setElementState("start");
     }
-  }else{
-    setColElemFalse();
   } 
 //  
 },[isFocused])  
 
 
     return (
-      <ImageBackground source={require('../../../../../../../../../../assets/img/wordFoon.png')} resizeMode="cover" style={styles.containerImg}> 
-          <WordMass colElemTrue={numberLevel+1} colElemFalse={colElemFalse}  colBlock={colBlock} navigation={{navigation}}/>  
-          <AlertTextMission  text={'text'}/>
+      <ImageBackground source={require('../../../../../../../../../../assets/img/logickSortFon.png')} resizeMode="cover" style={styles.containerImg}> 
+          <SortingMass colElemTrue={numberLevel}  colBlock={colBlock} navigation={{navigation}}/>  
+          <AlertTextMission  text={'сортировка'}/>
           <TimerStart />
           <Timer startTimer={elementState} />
       </ImageBackground>
@@ -92,7 +75,7 @@ useEffect(()=>{
       width: '100%',
       height: '100%',
       display: "flex",
-      backgroundColor: 'yellow',
+      backgroundColor: '#f56336',
       
     },
     container: {   

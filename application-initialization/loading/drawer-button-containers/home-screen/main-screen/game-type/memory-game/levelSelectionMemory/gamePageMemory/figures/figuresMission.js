@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {useState,useEffect} from 'react';
 import {useIsFocused } from '@react-navigation/native';
-import { StyleSheet, View,ImageBackground } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { nameGameСhange,intermediateResultMemoryPush } from '../../../../../../../../../../redux/counterSlice';
+import { StyleSheet, View,ImageBackground,Dimensions } from 'react-native';
 import SvgFiguresCircle from './svg/SvgFiguresCircle';
 import SvgFiguresStar from './svg/SvgFiguresStar';
 import SvgFiguresRect from './svg/SvgFiguresRect';
@@ -11,33 +13,56 @@ import SvgFiguresCylinder from './svg/SvgFiguresCylinder';
 import SvgFiguresRhombus from './svg/SvgFiguresRhombus';
 import SvgFiguresPrism from './svg/SvgFiguresPrism';
 
-import { useSelector} from 'react-redux';
-
 import AlertTextMission from '../../../../alertFail/alertTextMission/alertTextMission';
 import TimerStart from '../../../../timerStart';
 import Timer from '../../../../timer';
 
+//массив с фигурами
 let massElementColor= [<SvgFiguresPrism/>,<SvgFiguresRhombus/>,<SvgFiguresRect/>,<SvgFiguresCircle/>,<SvgFiguresStar/>,<SvgFiguresTriangle/>,<SvgFiguresRectangle/>,<SvgFiguresCylinder/>];
+//начальные значения
 let massNull=[];
 let massElementNew=[]; 
 
 export default  function Figures({navigation}) {
-  const isFocused = useIsFocused();
-  const [itapGames, setItapGames] = useState('ballFiguresThree');
-  const [elementState, setElementState] = useState();
-  const [massColor, setMassColor] = useState();
-  const numberLevel = useSelector(state => state.counter.numberLevel);
 
+const isFocused = useIsFocused();
+const dispatch = useDispatch();
+//наполнения массива значениями 
+  const isTrueFalse = useSelector(state => state.counter.timeGameEnd);
+  const intermediateResultMemory = useSelector(state => state.counter.intermediateResultMemory);
+  const numberLevel = useSelector(state => state.counter.numberLevel);
+//номер подуровня для появления сообщения
+const numberGame = useSelector(state => state.counter.numberGame);
+//запуск таймера 
+  const [elementState, setElementState] = useState();
+//начальные значения 
+  const [massColor, setMassColor] = useState();
+//Определяет размер экрана и тем саммым колличество элементов на экране  
+let widthWind =  Dimensions.get('window');
+const [colBlock, setColBlock] = useState(31);
+useEffect(()=>{
+//назначения названия игры  
+  dispatch(nameGameСhange('figures'))  
+//
+  if(widthWind.width > 760){
+    return setColBlock( 31);
+  }else{
+   return  setColBlock( 23);
+  }
+},[widthWind]);
+//   
+
+//наполнения массива значениями 
   useEffect(()=>{
     if(isFocused === true){
-      setItapGames('ballFiguresThree');
+  //выставления начальных значений массивов
       massNull=[];
       massElementNew=[];
-      
+  //    
     setMassColor(()=>{
-      for (let it=0; it <= 30; it++) {
+      for (let it=0; it <= colBlock; it++) {
         
-        if(it <= 28-numberLevel){
+        if(it <= colBlock-numberLevel){
           massNull.push(
             <View key={Math.random(massElementColor.toString().length*1)}
               style={[styles.elem]}>
@@ -55,18 +80,20 @@ export default  function Figures({navigation}) {
       }
       return massNull.sort(() => Math.random() - 0.4); 
     })
-      setTimeout(()=>{setElementState("start")},5000)
-      setTimeout(()=>{navigation.navigate('FiguresDecision')},21000)
+
+    if(numberGame === 1){
+      setTimeout(()=>{setElementState("start")},5000);
+    }else{
+      setElementState("start");
     }
-    else{
-      setElementState("stop");
-    }
-    
+  }  
   },[isFocused])
-  
+//формирования массива и добавления значения в intermediateResultMemory  
   useEffect(()=>{
+//сброс массива перед фармированием нового
     massElementNew=[];
-    if(isFocused === false){
+//
+    if(isTrueFalse === true && isFocused === true){
       
         massNull.forEach(element => {
           
@@ -77,10 +104,19 @@ export default  function Figures({navigation}) {
       }
     });
     
-    setItapGames('ballFiguresTwo')
+    dispatch(intermediateResultMemoryPush(massElementNew));  
   }
-  },[isFocused])
+  },[isTrueFalse])
   
+//переход на следующую страницу BallsDecision после формирования intermediateResultMemory и окончания таймера
+useEffect(()=>{
+    
+  if(isTrueFalse === true && intermediateResultMemory !== '' && isFocused === true){
+    
+    navigation.navigate('FiguresDecision')
+  }
+},[intermediateResultMemory])
+//  
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/figuresFon.png')} resizeMode="cover" style={styles.containerImg}> 
         <View style={styles.container}>
@@ -88,8 +124,8 @@ export default  function Figures({navigation}) {
             {massColor}
           </View>
         </View>
-          <AlertTextMission hiden={"8"} text={'1'}/>
-          <Timer startTimer={elementState} ballFiguresTwo={itapGames} massElement={massElementNew} />
+          <AlertTextMission text={'memory'}/>
+          <Timer startTimer={elementState} />
           <TimerStart />
       </ImageBackground>
     );
@@ -109,15 +145,16 @@ export default  function Figures({navigation}) {
       width: "100%",
       height: "100%",
       backgroundColor: 'transparent',
-      justifyContent: 'center',
-      alignItems: 'center',
+      
     },
     MainPageMain:{
       flexWrap: 'wrap',
       flexDirection: 'row',
+      alignContent: 'space-around',
+      justifyContent: 'center',
       width: '100%',
       height: '100%',
-      backgroundColor: 'transparent', 
+      backgroundColor: 'transparent',
     },
     elem: {
       display: 'flex',
@@ -125,6 +162,7 @@ export default  function Figures({navigation}) {
       alignItems: 'center',
       width: 80,
       height: 70,
-      margin: 10
+      margin: 10,
+      
     }
   });

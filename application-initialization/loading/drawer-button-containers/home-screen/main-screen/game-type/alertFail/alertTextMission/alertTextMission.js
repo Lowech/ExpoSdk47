@@ -1,22 +1,24 @@
 import {useState,useEffect,useRef } from 'react';
 import * as React from 'react';
-import { StyleSheet, Text, Animated, Pressable,ImageBackground,View, } from 'react-native';
+import { StyleSheet, Text, Animated, Pressable,ImageBackground } from 'react-native';
 import audioClick from '../../../../../../../../audio-components/audioClick.js';
-
+import { useSelector } from 'react-redux';
 import OpenSvg from './svg/openSvg';
 import CloceSvg from './svg/cloceSvg';
 
 
-
 export default  function AlertTextMission(props) {
- 
-    const [textMission, setTextMission] = useState('');
-    const alertHidden = useRef(new Animated.Value(0)).current;
-    
-    useEffect(()=>{
+//номер подуровня для появления сообщения
+  const numberGame = useSelector(state => state.counter.numberGame);
+//начальные значения текста и анимации 
+  const [textMission, setTextMission] = useState('');
+  const alertHidden = useRef(new Animated.Value(0)).current;
+
+//выставления значения текста в зависимости от уровня    
+  useEffect(()=>{
       
     switch (props.text) {
-        case '1':
+        case 'memory':
             setTextMission( 'Ваша задача запомнить увиденное на экране!' );
           break;
         case 'ball':
@@ -28,44 +30,64 @@ export default  function AlertTextMission(props) {
         case 'text':
             setTextMission( 'Какие по вашему мнению элементы тут лишние? Выделите их касанием!' );
         break;  
-      }
-    })
-  const interpolateHidden=  alertHidden.interpolate({
-        inputRange: [0, 100],
-        outputRange: ['30%', '93%']
-      });
-  
-    const openAlertMessage = () => {Animated.timing( alertHidden,{
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false
-      }).start()
-      audioClick();
+        case 'сортировка':
+            setTextMission( 'Отсортируйте элементы по возрастанию, разместив их в блоках снизу' );
+        break;
     }
+   
+  })
+//начальные значения показа сообщения 
+  const interpolateHidden = alertHidden.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['93%', '30%']
+  });
 
-    const cloceAlertMessage = () => {Animated.timing( alertHidden,{
-      toValue: 100,
+//открытие и закрытия окна сообщения   
+  const openAlertMessage = () => {Animated.timing( alertHidden,{
+    toValue: 100,
+    duration: 300,
+    useNativeDriver: false
+  }).start()
+} 
+  const cloceAlertMessage = () => {Animated.timing( alertHidden,{
+      toValue: 0,
       duration: 300,
       useNativeDriver: false
     }).start()
   }
-  const cloceAlertMessageClick = () => {Animated.timing( alertHidden,{
-    toValue: 100,
+
+//действия при клике пользователя открытие и закрытие
+const openAlertMessageClick = () => {Animated.timing( alertHidden,{
+  toValue: 100,
+  duration: 300,
+  useNativeDriver: false
+}).start()
+audioClick();
+}
+const cloceAlertMessageClick = () => {Animated.timing( alertHidden,{
+    toValue: 0,
     duration: 300,
     useNativeDriver: false
   }).start()
   audioClick();
 }
+
+//закрытия сообщения
   useEffect(()=>{
+//открытия сообщения в зависимости от уровня  
+    if(numberGame === 1){
+      openAlertMessage();
+    }
     
     setTimeout(()=>{cloceAlertMessage()},5000)
+
   },[])
     
     return (
        
-      <Animated.View  style={[styles.containerMessage, {top: interpolateHidden }]}>
+      <Animated.View  style={[styles.containerMessage, {top: interpolateHidden}]}>
           <Pressable
-            onPress={openAlertMessage}
+            onPress={openAlertMessageClick}
              style={({ pressed }) => [
               {padding: pressed
                   ? 5

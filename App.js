@@ -15,7 +15,7 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import  {firebaseConfig}  from './firebaseConfig';
 import * as NavigationBar from "expo-navigation-bar";
 import { setStatusBarHidden } from "expo-status-bar";
-import { Audio } from 'expo-av';
+import generalGame from './audio-components/generalGame';
 
 NavigationBar.setPositionAsync("absolute");
 NavigationBar.setVisibilityAsync("hidden");
@@ -23,7 +23,7 @@ NavigationBar.setBehaviorAsync("inset-swipe");
 NavigationBar.setBackgroundColorAsync("#00000080"); // `rgba(0,0,0,0.5)`
 setStatusBarHidden(true, "none");
 
-const sound = new Audio.Sound();
+//const sound = new Audio.Sound();
 async function playSound() {
     try {
       await sound.unloadAsync();
@@ -41,7 +41,11 @@ initializeApp(firebaseConfig);
   const db = getDatabase();
   
 export default  function App() {
-  
+  //музыка
+  let stp = 'stop';
+  useEffect(()=>{
+    generalGame(stp)
+  },[])
   //playSound()
 
   const [rezult, setRezult] = useState();

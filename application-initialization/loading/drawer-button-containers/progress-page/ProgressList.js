@@ -26,7 +26,7 @@ export default  function ProgressList(props) {
   
     querySnapshotoo.forEach((doc) => {
       let  userData = doc.data()
-
+      
       massElemBd.unshift({
         "name": userData.name,
         "victory": userData.victory,
@@ -43,7 +43,7 @@ export default  function ProgressList(props) {
 
       for(let it=0; it <= massElemBd.length-1; it++){
         switch (props.value) {
-          case 'больше всех побед':
+          case 'победоносцы':
 
             massElemBd.sort((a,b)=> {
               return  b.victory - a.victory;
@@ -56,7 +56,7 @@ export default  function ProgressList(props) {
             });
             
             break;
-          case "больше всех играет":
+          case "неиссякаемый энтузиазм":
 
             massElemBd.sort((a,b)=> {
               return b.numberGames - a.numberGames;
@@ -68,7 +68,7 @@ export default  function ProgressList(props) {
               title1: massElemBd[it].numberGames ,
             });
             break;
-          case "самая хорошая память":
+          case "феноменальная память":
 
             massElemBd.sort((a,b)=> {
               return b.remembering - a.remembering;
@@ -80,7 +80,7 @@ export default  function ProgressList(props) {
               title1: massElemBd[it].remembering ,
             });
             break;
-          case "самый смышленый":
+          case "исключительная сообразительность":
 
             massElemBd.sort((a,b)=> {
               return b.smartest - a.smartest;

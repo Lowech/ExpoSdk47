@@ -2,100 +2,110 @@ import { useState,useEffect,useRef } from 'react';
 import { StyleSheet, Text, View, Pressable,ImageBackground,Animated } from 'react-native';
 import {useIsFocused } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { timeGameFalse,numberLevelChangePlus,numberLevelChangeMinus } from '../../../../../../../redux/counterSlice';
-import {getFirestore , updateDoc , doc,getDocs,onSnapshot } from "firebase/firestore"; 
-import  {firebaseConfig}  from '../../../../../../../firebaseConfig';
-import { initializeApp } from 'firebase/app';
-import {getAuth} from 'firebase/auth';
+import { intermediateResultMemoryPush,numberLevelChangePlus,numberLevelChangeMinus,stateRezultatZero,numberGameСhange } from '../../../../../../../redux/counterSlice';
+
 
 import NextLevelSvg  from './nextLevelSvg';
 import LoginSvg  from '../../../../../authorization/loginSvg';
 import ButtonRefrechSvg  from './buttonRefrechSvg';
 import audioClick from '../../../../../../../audio-components/audioClick.js';
 
-initializeApp(firebaseConfig);
-  const auth = getAuth();
-  const dbF = getFirestore();
+  
   
 export default function MessageGameResultat({navigation}) {
  
-  const docUsers = doc(dbF, "users", auth.currentUser.uid);
-  const [hiddenVisible, setHiddenVisible] = useState('flex');
+const dispatch = useDispatch();
+//получения резульатов вычасления пройденного уровня
   const rezultGame = useSelector(state => state.counter.stateRezultat);
-  const nGame = useSelector(state => state.counter.nameGame);
+//названия уровня
+  const nGame = useSelector(state => state.counter.nameGame); 
+//номер уровня
+const numberLevel = useSelector(state => state.counter.numberLevel);
+//отображение кнопки слеющий уровень
+  const [hiddenVisible, setHiddenVisible] = useState('flex');
+//начальные значения отображения результата
   const [textRezult, setTextRezult] = useState();
   const [textColorRezult, setTextColorRezult] = useState("#6495ED");
-  const [usersVictory, setUsersVictory] = useState( ()=>{
-    onSnapshot(doc(dbF, "users", auth.currentUser.uid),  (doc) => {
-     
-       setUsersVictory(doc.data());
-    });
-  }
-);
-
+  
+//изминения цвета и значения текста результата уровня
   useEffect(()=>{
     
       if(rezultGame === 'true' ){
         setTextRezult('Победа');
         setTextColorRezult("#00FA9A"); 
-        setHiddenVisible('flex'); 
       }
       else{
         setTextRezult('Проигрыш');
         setTextColorRezult("#FF0000");
+      }
+//скрытие кнопки следующий уровень
+      if(rezultGame === 'true' && numberLevel != 10){
+        
+        setHiddenVisible('flex'); 
+      }
+      else{
+        
         setHiddenVisible("none");
       }
-  
   },[])
- 
-  const isFocused = useIsFocused();
-  const dispatch = useDispatch();
+ //
+  function goHome(){
+    audioClick();
+//переод на начальную страницу
+    navigation.navigate('MainScreen');
+//сброс значений предыдущего уровня
+    dispatch(intermediateResultMemoryPush(''));
+    dispatch(stateRezultatZero());
+//сброс значений к начальному уровню
+    dispatch(numberLevelChangeMinus());
+//перезапуск таймера и сообщения уровня
+    dispatch(numberGameСhange(1));
+  }
 
-  useEffect(()=>{
-    if(isFocused === false){
-      dispatch(timeGameFalse());
-      
-      async function updateUsersDoc(){
-   
-        if(rezultGame === 'true' ){
-        
-          await  updateDoc(docUsers, {
-            numberGames: usersVictory.numberGames + 1,
-            victory: usersVictory.victory + 1, 
-          }); 
-          if(nGame === 'figures' || nGame === 'ball'){
-            await  updateDoc(docUsers, {
-              remembering: usersVictory.remembering + 1,
-            });
-          }
-          if(nGame === 'wordMission'){
-            await  updateDoc(docUsers, {
-              smartest: usersVictory.smartest + 1,
-            });
-          }
-        }
-        else{
-          await updateDoc(docUsers, {
-            numberGames: usersVictory.numberGames + 1,
-            victory: usersVictory.victory - 1,
-            
-          });
-          if(nGame === 'figures' || nGame === 'ball'){
-            await  updateDoc(docUsers, {
-              remembering: usersVictory.remembering - 1,
-            });
-          }
-          if(nGame === 'wordMission'){
-            await  updateDoc(docUsers, {
-              smartest: usersVictory.smartest - 1,
-            });
-          }
-        }
-      }
-    updateUsersDoc();
+  function goGameReturn(){
+    audioClick();
+//сброс значений предыдущего уровня
+    dispatch(intermediateResultMemoryPush(''));
+    dispatch(stateRezultatZero());
+//остановка появления сообщения уровня и включения таймера сразу
+    dispatch(numberGameСhange(2));
+//переход к уровню
+    if(nGame === 'ball'){
+      navigation.navigate('Balls');
     }
-    
-  },[isFocused])
+    if(nGame === 'figures'){
+      navigation.navigate('Figures');
+    }
+    if(nGame === 'wordMission'){
+      navigation.navigate('WordMission');
+    }
+    if(nGame === 'sortingMission'){
+      navigation.navigate('SortingMission');
+    }
+  }
+  function goNextLevel(){
+    audioClick();
+//сброс значений предыдущего уровня
+    dispatch(intermediateResultMemoryPush(''));
+    dispatch(stateRezultatZero());
+//остановка появления сообщения уровня и включения таймера сразу
+    dispatch(numberGameСhange(2));
+//прибавления сложности
+    dispatch(numberLevelChangePlus());
+//переход к уровню
+    if(nGame === 'ball'){
+      navigation.navigate('Balls');
+    }
+    if(nGame === 'figures'){
+      navigation.navigate('Figures');
+    } 
+    if(nGame === 'wordMission'){
+      navigation.navigate('WordMission');
+    }  
+    if(nGame === 'sortingMission'){
+      navigation.navigate('SortingMission');
+    }
+  }
 
     const styles = StyleSheet.create({
       menuButtonСontainer:{
@@ -160,38 +170,6 @@ export default function MessageGameResultat({navigation}) {
         borderBottomColor: "rgba(0, 0, 0,0.5)",
       }
     });
-
-  function goHome(){
-    audioClick();
-    navigation.navigate('MainScreen');
-    dispatch(numberLevelChangeMinus());
-  }
-
-  function goGameReturn(){
-    audioClick();
-    if(nGame === 'ball'){
-      navigation.navigate('Balls');
-    }
-    if(nGame === 'figures'){
-      navigation.navigate('Figures');
-    }
-    if(nGame === 'wordMission'){
-      navigation.navigate('WordMission');
-    }
-  }
-  function goNextLevel(){
-    audioClick();
-    if(nGame === 'ball'){
-      navigation.navigate('Balls');
-    }
-    if(nGame === 'figures'){
-      navigation.navigate('Figures');
-    } 
-    if(nGame === 'wordMission'){
-      navigation.navigate('WordMission');
-    } 
-    dispatch(numberLevelChangePlus());
-  }
 
     return (
       <ImageBackground source={require('../../../../../../..//assets/img/alertRezultat.png')} resizeMode="cover" style={styles.menuButtonСontainer}>

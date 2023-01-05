@@ -115,7 +115,12 @@ function birthVerification(){
              victory: 0,
              numberGames: 0,
              smartest: 0,
-             remembering: 0
+             remembering: 0,
+             memoryFiguresPart: 0,
+             memoryBallsPart: 0,
+             logickSortingPart: 0,
+             logickWordPart: 0,
+             rangTrue: 0
            });
         
           } catch (e) {

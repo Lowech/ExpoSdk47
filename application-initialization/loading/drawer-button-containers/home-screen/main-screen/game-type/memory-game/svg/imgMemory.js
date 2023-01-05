@@ -21,7 +21,7 @@ function ImgLogic() {
 <Line  x1="23" y1="7" x2="25" y2="7" stroke="blue" strokeWidth="2" strokeMiterlimit="20"/>
 
 
-<Circle  cx="8" cy="16" r="8" fill="rgba(160, 82, 45,0.5)" stroke="white" strokeWidth="0.4" strokeMiterlimit="10"/>
+<Circle  cx="8" cy="16" r="8" fill="rgb(160, 82, 45)" stroke="white" strokeWidth="0.4" strokeMiterlimit="10"/>
 <Line  x1="3" y1="14" x2="6" y2="14" stroke="white" strokeWidth="0.5" strokeMiterlimit="20"/>
 <Rect  x="1" y="10" fill="grey" stroke="white" strokeWidth="0.2" width="10" height="2" rx="1" ry="2"/>
 <Circle  cx="13" cy="12" r="0.2" fill="#F4A460" />

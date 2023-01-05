@@ -2,23 +2,19 @@ import * as React from 'react';
 import { useState,useEffect } from 'react';
 import { StyleSheet, Text, Animated } from 'react-native';
 import {useIsFocused } from '@react-navigation/native';
-  
+import { useSelector } from 'react-redux';
+
+
 export default  function TimerStart() {
-  
+//начальные значения
   const isFocused = useIsFocused();
   const [sec, setSec] = useState(5);
-  const [dispalyNone, setDispalyNone] = useState(9999);
+  const [dispalyNone, setDispalyNone] = useState(-1);
   const [colorTimer, setColorTimer] = useState('lime');
   const fadeAnim = new Animated.Value(1);
-
-  useEffect(()=>{
-      
-    if(isFocused === true){
-      
-      setSec(5)
-    }
-  },[isFocused])
-
+//номер подуровня для появления таймера
+const numberGame = useSelector(state => state.counter.numberGame);
+//анимация таймера
     useEffect(() => {
       
       Animated.timing(fadeAnim, {
@@ -36,11 +32,16 @@ export default  function TimerStart() {
         return;
       }
     },[fadeAnim])
-
+//запуск таймера
     useEffect(()=>{
-
+      
         if(sec > 1){
+          if(numberGame === 1){
+
           setTimeout(()=>setSec(sec-1),1000);
+          setDispalyNone(9999);
+          
+          }
         }
         
         if(sec === 1){
@@ -57,7 +58,8 @@ export default  function TimerStart() {
             setColorTimer( '#FF0000' );
             break;
         } 
-    },[sec])
+     
+    },[numberGame,sec])
 
     
   const styles = StyleSheet.create({
@@ -77,8 +79,7 @@ export default  function TimerStart() {
       top: "5%",
       left: "31%",
       zIndex: dispalyNone,
-      
-      
+ 
     },
     timer:{
       color: colorTimer,

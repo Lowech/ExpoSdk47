@@ -1,48 +1,31 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, ScrollView,Button , Animated, Pressable,ImageBackground,Easing } from 'react-native';
-import {useState,useEffect,useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { nameGameСhange} from '../../../../../../../../../../redux/counterSlice';
+import { StyleSheet, Text, View, ScrollView, Animated, Pressable,ImageBackground,Easing } from 'react-native';
+import {useState,useEffect,useRef} from 'react';
+import { useSelector } from 'react-redux';
 import AlertTextMission from '../../../../alertFail/alertTextMission/alertTextMission';
 import Timer from '../../../../timer';
-import { Audio } from 'expo-av';
+import TimerStart from '../../../../timerStart';
 import audioClick from '../../../../../../../../../../audio-components/audioClick.js';
 import {useIsFocused } from '@react-navigation/native';
+import Scoring from '../../../../scoring';
 
 
-let massElementColor= ["red","blue","yellow","green","grey","black","white","brown"];
+//массив выбранных элементов пользователем
 let clickElementColor= [];
 
 
 export default  function BallsDecision({navigation}) {
-  const sound = require('../../../../../../../../../../assets/audio/bulkBit.wav');
-   function playSound() {
-    Audio.Sound.createAsync(
-      sound,
-      { shouldPlay: true }
-    ).then((res)=>{
-      res.sound.setOnPlaybackStatusUpdate((status)=>{
-        if(!status.didJustFinish) return;
-        //console.log(status);
-        
-        res.sound.unloadAsync()
-        .catch(()=>{
-          console.log(error)
-        });
-      });
-    })
-    .catch((error)=>{
-      console.log(error)
-    });
-  }
-  
-    const isTrueFalse = useSelector(state => state.counter.timeGameEnd);
-    
-    const dispatch = useDispatch();
-    dispatch(nameGameСhange('ball'));
 
-    const [elementState, setElementState] = useState("start");
-    const [itapGames, setItapGames] = useState('ballFiguresZero');
+const isFocused = useIsFocused();
+//номер подуровня для появления таймера
+const numberGame = useSelector(state => state.counter.numberGame);
+//промежуточные данные уровня
+    const intermediateResultMemory = useSelector(state => state.counter.intermediateResultMemory);
+//запуск таймера
+    const [elementState, setElementState] = useState("stop");
+//начальный массив значений результата уровня
+    const [selectionResult, setSelectionResult] = useState([]);
+//количество выбранных элементов пользователем
     const [numberRed, setNumberRed] = useState(0);
     const [numberBlue, setNumberBlue] = useState(0);
     const [numberYellow, setNumberYellow] = useState(0);
@@ -51,7 +34,7 @@ export default  function BallsDecision({navigation}) {
     const [numberBlack, setNumberBlack] = useState(0);
     const [numberWhite, setNumberWhite] = useState(0);
     const [numberBrown, setNumberBrown] = useState(0);
- 
+//анимация кликов цифр 
     const animateNumberRed = useRef(new Animated.Value(0)).current;
     const animateNumberBlue = useRef(new Animated.Value(0)).current;
     const animateNumberYellow = useRef(new Animated.Value(0)).current;
@@ -60,7 +43,7 @@ export default  function BallsDecision({navigation}) {
     const animateNumberBlack = useRef(new Animated.Value(0)).current;
     const animateNumberWhite = useRef(new Animated.Value(0)).current;
     const animateNumberBrown = useRef(new Animated.Value(0)).current;
-    
+//анимация    
     const interpolateHiddenRed =  animateNumberRed.interpolate({
       inputRange: [0, 100],
       outputRange: ['60%', '0%']
@@ -93,6 +76,7 @@ export default  function BallsDecision({navigation}) {
       inputRange: [0, 100],
       outputRange: ['60%', '0%']
     });
+//функции на нажатия пользователя
 const VisibleNumberPlusRed = () => {
   audioClick();
   animateNumberRed.resetAnimation();
@@ -135,7 +119,7 @@ const VisibleNumberPlusBlue = () => {
   setNumberBlue(numberBlue+1)
 }
 const VisibleNumberMinusBlue = () => {
-  playSound();
+  audioClick();
   if(numberBlue==0)return;
   animateNumberBlue.resetAnimation();
  Animated.timing( animateNumberBlue,{
@@ -149,7 +133,7 @@ const VisibleNumberMinusBlue = () => {
 }
 
 const VisibleNumberPlusYellow = () => {
-  playSound();
+  audioClick();
   animateNumberYellow.resetAnimation();
  Animated.timing( animateNumberYellow,{
     toValue: 100,
@@ -161,7 +145,7 @@ const VisibleNumberPlusYellow = () => {
   setNumberYellow(numberYellow+1)
 }
 const VisibleNumberMinusYellow = () => {
-  playSound();
+  audioClick();
   if(numberYellow==0)return;
   animateNumberYellow.resetAnimation();
  Animated.timing( animateNumberYellow,{
@@ -175,7 +159,7 @@ const VisibleNumberMinusYellow = () => {
 }
 
 const VisibleNumberPlusGreen = () => {
-  playSound();
+  audioClick();
   animateNumberGreen.resetAnimation();
  Animated.timing( animateNumberGreen,{
     toValue: 100,
@@ -187,7 +171,7 @@ const VisibleNumberPlusGreen = () => {
   setNumberGreen(numberGreen+1)
 }
 const VisibleNumberMinusGreen = () => {
-  playSound();
+  audioClick();
   if(numberGreen==0)return;
   animateNumberGreen.resetAnimation();
  Animated.timing( animateNumberGreen,{
@@ -201,7 +185,7 @@ const VisibleNumberMinusGreen = () => {
 }
 
 const VisibleNumberPlusGrey = () => {
-  playSound();
+  audioClick();
   animateNumberGrey.resetAnimation();
  Animated.timing( animateNumberGrey,{
     toValue: 100,
@@ -213,7 +197,7 @@ const VisibleNumberPlusGrey = () => {
   setNumberGrey(numberGrey+1)
 }
 const VisibleNumberMinusGrey = () => {
-  playSound();
+  audioClick();
   if(numberGrey==0)return;
   animateNumberGrey.resetAnimation();
  Animated.timing( animateNumberGrey,{
@@ -227,7 +211,7 @@ const VisibleNumberMinusGrey = () => {
 }
 
 const VisibleNumberPlusBlack = () => {
-  playSound();
+  audioClick();
   animateNumberBlack.resetAnimation();
  Animated.timing( animateNumberBlack,{
     toValue: 100,
@@ -239,7 +223,7 @@ const VisibleNumberPlusBlack = () => {
   setNumberBlack(numberBlack+1)
 }
 const VisibleNumberMinusBlack = () => {
-  playSound();
+  audioClick();
   if(numberBlack==0)return;
   animateNumberBlack.resetAnimation();
  Animated.timing( animateNumberBlack,{
@@ -253,7 +237,7 @@ const VisibleNumberMinusBlack = () => {
 }
 
 const VisibleNumberPlusWhite = () => {
-  playSound();
+  audioClick();
   animateNumberWhite.resetAnimation();
  Animated.timing( animateNumberWhite,{
     toValue: 100,
@@ -265,7 +249,7 @@ const VisibleNumberPlusWhite = () => {
   setNumberWhite(numberWhite+1)
 }
 const VisibleNumberMinusWhite = () => {
-  playSound();
+  audioClick();
   if(numberWhite==0)return;
   animateNumberWhite.resetAnimation();
  Animated.timing( animateNumberWhite,{
@@ -277,8 +261,9 @@ const VisibleNumberMinusWhite = () => {
   clickElementColor.pop("white")
   setNumberWhite(numberWhite-1)
 }
+
 const VisibleNumberPlusBrown = () => {
-  playSound();
+  audioClick();
   animateNumberBrown.resetAnimation();
  Animated.timing( animateNumberBrown,{
     toValue: 100,
@@ -290,7 +275,7 @@ const VisibleNumberPlusBrown = () => {
   setNumberBrown(numberBrown+1)
 }
 const VisibleNumberMinusBrown = () => {
-  playSound();
+  audioClick();
   if(numberBrown==0)return;
   animateNumberBrown.resetAnimation();
  Animated.timing( animateNumberBrown,{
@@ -302,29 +287,36 @@ const VisibleNumberMinusBrown = () => {
   clickElementColor.pop("brown")
   setNumberBrown(numberBrown-1)
 }
+//объединение массива с значениями предыдущего экрана и выбранных польвателем
 useEffect(()=>{
-  if(isTrueFalse === true){
-    
-    navigation.navigate("MessageGameResultat")
-    
-  }else{
-    setItapGames('ballFiguresZero')
-  }
-},[isTrueFalse])
 
-const isFocused = useIsFocused();
+  setSelectionResult([intermediateResultMemory,clickElementColor]);
+
+},[numberBrown,numberWhite,numberBlack,numberGrey,numberGreen,numberYellow,numberBlue,numberRed])
+//
+//сброс значений назначения начальных значений
 useEffect(()=>{
-  if(isFocused === true){
-    clickElementColor= [];
-    setItapGames('ballFiguresOne')
-    
+  
+if(isFocused === true){
+//запуск таймера при фокусе экрана и при первой игре
+  if(numberGame === 1){
+    setTimeout(()=>{setElementState("start")},5000);
   }else{
-    setItapGames('ballFiguresZero')
-  }
+    setElementState("start");
+} 
+//выставления начально пустого массива
+  clickElementColor= [];
+//обновления состояния в массив для результатов
+  setSelectionResult([intermediateResultMemory,['false']]);
+}
+
 },[isFocused])
+//
     return (
       <ImageBackground source={require('../../../../../../../../../../assets/img/balls.png')} resizeMode="cover" style={styles.containerImg}> 
-        <Timer startTimer={elementState} ballFiguresOne={itapGames} clickElementMass={clickElementColor} />
+        <Scoring selectionResult={selectionResult} navig={navigation}/>
+        <Timer startTimer={elementState} />
+        <TimerStart />
         <ScrollView style={styles.ScrollView} persistentScrollbar={true}>
          <View  style={styles.MainPageMain}>
            <View style={styles.containerItems} >
@@ -511,7 +503,6 @@ useEffect(()=>{
                 </Pressable>
               </View>
            </View>  
-          <Button title="назад" onPress={() => navigation.goBack()}></Button>
           </View>
        </ScrollView>
         <AlertTextMission text={'ball'}/>

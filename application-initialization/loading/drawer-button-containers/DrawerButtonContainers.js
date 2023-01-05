@@ -5,7 +5,7 @@ import Progress from './progress-page/progress';
 import Correspondence from './correspondence/correspondence';
 import Authorization from '../authorization/authorization';
 import Setting from './setting/setting';
-import MessageGameResultat from '../drawer-button-containers/home-screen/main-screen/game-type/message-game-resultat/messageGameResultat';
+import Rang from '../drawer-button-containers/ranks/ranks';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,7 +29,7 @@ export default function DrawerButtonContainers() {
         <Drawer.Screen name="Correspondence" component={Correspondence} options={{headerShown: false}}/>
         <Drawer.Screen name="Authorization" component={Authorization} options={{headerShown: false}} />
         <Drawer.Screen name="Setting" component={ Setting} options={{headerShown: false}}/>
-        <Drawer.Screen name="MessageGameResultat" component={ MessageGameResultat} options={{headerShown: false}}/>
+        <Drawer.Screen name="Rang" component={ Rang} options={{headerShown: false}}/>
       </Drawer.Navigator>
     );
   }

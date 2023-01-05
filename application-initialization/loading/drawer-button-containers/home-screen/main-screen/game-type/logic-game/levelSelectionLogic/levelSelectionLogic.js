@@ -11,14 +11,20 @@ function GoGameWordMission(){
     navigation.navigate('WordMission');
    },1)
 }
+function GoGameSortingMission(){
+  audioClick();
+  setTimeout(()=>{
+    navigation.navigate('SortingMission');
+   },1)
+}
 
   return (
     <ImageBackground source={require('../../../../../../../../assets/img/fonLogick.png')} resizeMode="cover" style={styles.MainPageMain}>
         <TouchableOpacity style={styles.GameIconsContainer}  onPress={GoGameWordMission}>
-          <Image source={require('../../../../../../../../assets/img/ballsIcons.png')} resizeMode="cover" style={styles.GameIcons}/>
+          <Image source={require('../../../../../../../../assets/img/word.png')} resizeMode="cover" style={styles.GameIcons}/>
         </TouchableOpacity >
-        <TouchableOpacity   style={styles.GameIconsContainer} onPress={() =>navigation.navigate('Figures')}>
-          <Image source={require('../../../../../../../../assets/img/ballsIcons.png')} resizeMode="cover" style={styles.GameIcons}/>
+        <TouchableOpacity   style={styles.GameIconsContainer} onPress={GoGameSortingMission}>
+          <Image source={require('../../../../../../../../assets/img/logickSort.png')} resizeMode="cover" style={styles.GameIcons}/>
          </TouchableOpacity >
     </ImageBackground>
     );

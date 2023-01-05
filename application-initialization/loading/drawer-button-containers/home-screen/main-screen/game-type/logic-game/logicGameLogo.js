@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "rgba(0, 0, 0,0.3)",
   }
 });
-
+// проверка количество тимбон при входе в игру
 function securityPointer(r){
   audioClick(); 
   const starCountRef = ref(db, `users/${auth.currentUser.uid}`);
@@ -56,7 +56,7 @@ function securityPointer(r){
       }
     });
 }
-
+//
 const isFocused = useIsFocused();
 useEffect(()=>{
   if(isFocused === false){
