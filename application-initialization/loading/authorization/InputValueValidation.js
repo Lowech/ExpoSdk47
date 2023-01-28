@@ -2,10 +2,19 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, Animated} from 'react-native';
 import { useState,useEffect,useRef} from 'react';
 import { useSelector } from 'react-redux';
-
+import audioClick from '../../../audio-components/audioClick.js'
 
 export default function InputValueValidation(props)  {
 
+//проверка статуса звука
+const audioClickStatus = useSelector(state => state.counter.audioClick);
+function audioStatus(){
+  if(audioClickStatus === true){
+    audioClick();
+    
+  }
+}
+//  
   const displayValue = useSelector(state => state.counter.value1);
 
   const [textError, setTextError] = useState('');
@@ -24,6 +33,7 @@ export default function InputValueValidation(props)  {
     duration: 500,
     useNativeDriver: false
   }).start() 
+  
 }
   const blockOffsetVisibility = () => {  Animated.timing( fadeAnim1,{
     toValue: 20,
@@ -159,7 +169,7 @@ export default function InputValueValidation(props)  {
       <Text style={styles.modalText}>{textError}</Text>
           <TouchableOpacity 
             style={styles.buttonClose}
-            onPress={()=>resetAnimation()}>
+            onPress={()=>{resetAnimation(),audioStatus()}}>
               <Text style={styles.modalText}>ok</Text>
           </TouchableOpacity>    
     </Animated.View>

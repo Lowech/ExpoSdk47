@@ -4,12 +4,23 @@ import { StyleSheet, Text, View, TouchableOpacity,TextInput,ImageBackground} fro
 import { initializeApp } from 'firebase/app';
 import  {firebaseConfig}  from '../../../../firebaseConfig';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
-
+import audioClick from '../../../../audio-components/audioClick.js'
+import { useSelector, useDispatch } from 'react-redux';
 import  InputValueValidation  from "../InputValueValidation";
 
   initializeApp(firebaseConfig);
   
-  export default  function PasswordRecovery({navigation}) {
+export default  function PasswordRecovery({navigation}) {
+
+  //проверка статуса звука
+  const audioClickStatus = useSelector(state => state.counter.audioClick);
+  function audioStatus(){
+    if(audioClickStatus === true){
+      audioClick();
+      
+    }
+  }
+  //  
     const auth = getAuth();
     const [email, onChangeEmail] = React.useState("");
     const [inputId, setInputId] = useState('');
@@ -17,7 +28,7 @@ import  InputValueValidation  from "../InputValueValidation";
     const [borderErrorEmail, setBorderErrorEmail] = useState({borderBottomColor: 'rgb(128, 128, 128)'});
    
     function resetPassword(){
-      
+      audioStatus();
      sendPasswordResetEmail(auth, email)
       .then(() => {
         setInputId('email правильный');

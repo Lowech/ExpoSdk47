@@ -29,7 +29,12 @@ export const counterSlice = createSlice({
 //промежуточный результат между экранами
     intermediateResultMemory: '',
 //управления появлением AlertTextMission в уровнях
-    numberGame: 1
+    numberGame: 1,
+//наличия звука 
+    audioClick: true,
+    audioGame: true,
+    audioGameState: true,
+    audioLevel: true,
   },
   reducers: {
     hidingOpeningRegistration: state => {
@@ -80,13 +85,29 @@ export const counterSlice = createSlice({
           }
 
         if(resultSecurity.includes("false")){
-          update(starCountRef, {timbon: sumPointer - 1});
           state.stateRezultat = "false";
+          if(state.numberLevel < 5){
+            update(starCountRef, {timbon: sumPointer - 1});
+          }
+          if(state.numberLevel >= 5 && state.numberLevel < 8){
+            update(starCountRef, {timbon: sumPointer - 2});
+          } 
+          if(state.numberLevel >= 8){
+            update(starCountRef, {timbon: sumPointer - 3});
+          }  
         }else{
-          update(starCountRef, {timbon: sumPointer + 1});
           state.stateRezultat = "true";
-        }
-        
+           if(state.numberLevel < 5){
+            console.log(resultSecurity)
+            update(starCountRef, {timbon: sumPointer + 1});
+           }
+           if(state.numberLevel >= 5 && state.numberLevel < 8){
+            update(starCountRef, {timbon: sumPointer + 1});
+           } 
+           if(state.numberLevel >= 8){
+            update(starCountRef, {timbon: sumPointer + 1});
+           }
+        }   
     },
     positionStatusAbsolute: state => {
       state.positionStatus = "absolute";
@@ -112,6 +133,18 @@ export const counterSlice = createSlice({
     numberGameСhange: (state, action) =>  {
       state.numberGame = action.payload;
     },
+    audioGameСhange: (state, action) =>  {
+      state.audioGame = action.payload;
+    },
+    audioGameStateСhange: (state, action) =>  {
+      state.audioGameState = action.payload;
+    },
+    audioClickСhange: (state, action) =>  {
+      state.audioClick = action.payload;
+    },
+    audioLevelСhange: (state, action) =>  {
+      state.audioLevel = action.payload;
+    },
   }
 })
 
@@ -130,6 +163,10 @@ export const {
   numberGameСhange,
   stateRezultatZero,
   intermediateResultMemoryPush,
-  nameGameСhange } = counterSlice.actions
+  nameGameСhange,
+  audioGameСhange,
+  audioClickСhange,
+  audioLevelСhange,
+  audioGameStateСhange } = counterSlice.actions
 
 export default counterSlice.reducer

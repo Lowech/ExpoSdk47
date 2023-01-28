@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity,TextInput,Pressable,ActivityIn
 
 import LoginSvg from './loginSvg';
 import  InputValueValidation  from "./InputValueValidation";
+import audioClick from '../../../audio-components/audioClick.js'
 
 import { initializeApp } from 'firebase/app';
 import  {firebaseConfig}  from '../../../firebaseConfig';
@@ -12,8 +13,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { hideRevealAuthorization,hideAuthorizationRegistration} from '../../../redux/counterSlice';
 
   initializeApp(firebaseConfig);
-  export default  function SingUp(props) {
+export default  function SingUp(props) {
 
+  //проверка статуса звука
+  const audioClickStatus = useSelector(state => state.counter.audioClick);
+  function audioStatus(){
+    if(audioClickStatus === true){
+      audioClick();
+      
+    }
+  }
+  //  
     const [activityIndicatorPosition, setActivityIndicatorPosition] = useState("relative");
     const [activityIndicatorDisplay, setActivityIndicatorDisplay] = useState("none");
     const [resetPasswordColor, setResetPasswordColor] = useState('silver');
@@ -27,6 +37,7 @@ import { hideRevealAuthorization,hideAuthorizationRegistration} from '../../../r
     const auth = getAuth();
     
   function inSignUp(){
+      audioStatus();
       setActivityIndicatorPosition("absolute");
       setActivityIndicatorDisplay("flex");
       setInputId(""); 
@@ -78,6 +89,7 @@ import { hideRevealAuthorization,hideAuthorizationRegistration} from '../../../r
   function LoginVisible(){
       if(displayValue1==='none'){
         dispatch(hideRevealAuthorization());
+        audioStatus();
         
       }
     }
@@ -220,7 +232,7 @@ return (
   </View>  
      
   </View>
-  <Pressable style={styles.passwordRecoveryContainer} onPressIn={()=>{props.goToMain.navigate('PasswordRecovery')}}>
+  <Pressable style={styles.passwordRecoveryContainer} onPressIn={()=>{props.goToMain.navigate('PasswordRecovery'),audioStatus()}}>
         <Text style={styles.passwordRecoveryText} >забыли пароль?</Text>
     </Pressable> 
   </View>

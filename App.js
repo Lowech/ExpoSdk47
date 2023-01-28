@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 
+
 import Loading from './application-initialization/loading/Loading';
 import WaitingDownload from './application-initialization/WaitingDownload';
 
@@ -15,7 +16,7 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import  {firebaseConfig}  from './firebaseConfig';
 import * as NavigationBar from "expo-navigation-bar";
 import { setStatusBarHidden } from "expo-status-bar";
-import generalGame from './audio-components/generalGame';
+
 
 NavigationBar.setPositionAsync("absolute");
 NavigationBar.setVisibilityAsync("hidden");
@@ -23,30 +24,12 @@ NavigationBar.setBehaviorAsync("inset-swipe");
 NavigationBar.setBackgroundColorAsync("#00000080"); // `rgba(0,0,0,0.5)`
 setStatusBarHidden(true, "none");
 
-//const sound = new Audio.Sound();
-async function playSound() {
-    try {
-      await sound.unloadAsync();
-      //await sound.loadAsync(require('../../../../../assets/audio/foon.wav'));
-      await sound.replayAsync();
-      //await sound.setStatusAsync({ isLooping: true})
-      await sound.setStatusAsync({ volume: 0.5 })
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
 initializeApp(firebaseConfig);
   const auth = getAuth();
   const db = getDatabase();
   
 export default  function App() {
-  //музыка
-  let stp = 'stop';
-  useEffect(()=>{
-    generalGame(stp)
-  },[])
-  //playSound()
 
   const [rezult, setRezult] = useState();
   const [displayOn, setDisplayOn] = useState();

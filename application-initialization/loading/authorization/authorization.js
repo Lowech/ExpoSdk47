@@ -2,16 +2,17 @@ import * as React from 'react';
 import { useState } from 'react';
 import Registration from './registration';
 import SingUp from './singUp';
-import { StyleSheet, View,ImageBackground} from 'react-native';
+import { StyleSheet, View,ImageBackground,Pressable} from 'react-native';
 
 export default  function Authorization({navigation,route}) {
+
   const [position, setPosition] = useState('center');
 
  function pozitionElementTop(){
-  setPosition("flex-start")
+  setPosition("flex-start");
  }
  function pozitionElementCenter(){
-  setPosition("center")
+  setPosition("center");
  }
 
   const styles = StyleSheet.create({
@@ -24,13 +25,19 @@ export default  function Authorization({navigation,route}) {
       height: "100%",
       backgroundColor: 'transparent',
       
+    },
+    pressebleStyle:{
+      
+      width: "auto",
+      height: "auto",
+
     }
   });
 
     return (
       <ImageBackground source={require('../../../assets/img/avtorizachia.png')} resizeMode="cover" style={styles.MainPageMain}>
-        <View>
-            <SingUp pozitionElementTop={pozitionElementTop} pozitionElementCenter={pozitionElementCenter} goToMain={navigation}/>
+        <View style={styles.pressebleStyle} >
+            <SingUp  pozitionElementTop={pozitionElementTop} pozitionElementCenter={pozitionElementCenter} goToMain={navigation}/>
         </View>
         <View>
             <Registration pozitionElementTop={pozitionElementTop} pozitionElementCenter={pozitionElementCenter} goToMain={navigation}/>

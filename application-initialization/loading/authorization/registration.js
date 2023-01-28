@@ -6,7 +6,7 @@ import {getAuth, createUserWithEmailAndPassword,onAuthStateChanged} from 'fireba
 import {getFirestore , collection, setDoc,getDocs , query,doc, where, orderBy } from "firebase/firestore"; 
 import { getDatabase, ref, set} from "firebase/database";
 import  {firebaseConfig}  from '../../../firebaseConfig';
-
+import audioClick from '../../../audio-components/audioClick.js';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideAuthorizationRegistration, hidingOpeningRegistration, } from '../../../redux/counterSlice';
@@ -17,6 +17,15 @@ import  InputValueValidation  from "./InputValueValidation";
 
 
 export default  function Registration(props) {
+
+//проверка статуса звука
+const audioClickStatus = useSelector(state => state.counter.audioClick);
+function audioStatus(){
+  if(audioClickStatus === true){
+    audioClick();
+  }
+  
+}
   initializeApp(firebaseConfig);
   const auth = getAuth();
   const db = getDatabase();
@@ -168,6 +177,7 @@ function birthVerification(){
     function Women(){
       
       if(women[0]==='rgba(0, 0, 0, 0.3)'){
+        audioStatus();
         setWomen(['white','#8B4513']);
         setMen(['rgba(0, 0, 0, 0.3)','rgba(128, 128, 128, 0.2)']);
         setGenderPerson('0');
@@ -177,6 +187,7 @@ function birthVerification(){
     function Men(){
       
       if(men[0]==='rgba(0, 0, 0, 0.3)'){
+        audioStatus();
         setWomen(['rgba(0, 0, 0, 0.3)','rgba(128, 128, 128, 0.2)']);
         setMen(['white','#8B4513']);
         setGenderPerson('1');
@@ -185,11 +196,13 @@ function birthVerification(){
     }
     function RegistrationVisible(){
         if(displayValue==='none'){
+          audioStatus();
           dispatch(hidingOpeningRegistration());
         }   
     }
 // регистрация пользователя   
     function onSignUp(){
+      audioStatus();
       if(email !== "" && password !== "" && login !== "" && birth !== ""){
         setActivityIndicatorPosition("absolute");
         setActivityIndicatorDisplay("flex");
