@@ -43,7 +43,7 @@ function audioStatus(){
 
       const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "rgba(105, 105, 105,0.5)" : "transparent";
-        const color = item.id === selectedId ? 'white' : 'rgba(105, 105, 105,0.8)';
+        const color = item.id === selectedId ? 'white' : 'rgba(222, 184, 135,1)';
         return (
           <Item
             item={item}
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
 });
     
     return (
-      <ImageBackground source={require('../../../../assets/img/progress.png')} resizeMode="cover" style={styles.container}>
+      <ImageBackground source={require('../../../../assets/img/1.png')} resizeMode="cover" style={styles.container}>
         <View style={styles.containerItems}>
          <FlatList 
           data={DATA}

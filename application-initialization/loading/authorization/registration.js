@@ -2,22 +2,23 @@ import * as React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity,TextInput,ActivityIndicator  } from 'react-native';
 
 import { initializeApp } from 'firebase/app';
-import {getAuth, createUserWithEmailAndPassword,onAuthStateChanged} from 'firebase/auth';
+import {getAuth, createUserWithEmailAndPassword,onAuthStateChanged,signOut} from 'firebase/auth';
 import {getFirestore , collection, setDoc,getDocs , query,doc, where, orderBy } from "firebase/firestore"; 
-import { getDatabase, ref, set} from "firebase/database";
+import { getDatabase, ref, set,goOffline,goOnline} from "firebase/database";
 import  {firebaseConfig}  from '../../../firebaseConfig';
 import audioClick from '../../../audio-components/audioClick.js';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { hideAuthorizationRegistration, hidingOpeningRegistration, } from '../../../redux/counterSlice';
-
+import { hideAuthorizationRegistration, hidingOpeningRegistration,menuCenterVisibleСhange } from '../../../redux/counterSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused,StackActions  } from '@react-navigation/native';
 
 import RegistrationSVG from './RegistrationSVG';
 import  InputValueValidation  from "./InputValueValidation";
 
 
 export default  function Registration(props) {
-
+ 
 //проверка статуса звука
 const audioClickStatus = useSelector(state => state.counter.audioClick);
 function audioStatus(){
@@ -26,15 +27,14 @@ function audioStatus(){
   }
   
 }
-  initializeApp(firebaseConfig);
+  const firebase = initializeApp(firebaseConfig);
   const auth = getAuth();
-  const db = getDatabase();
+  const db = getDatabase(firebase);
   const dbF = getFirestore();
   const collectionUsers = collection(dbF, "users");
   const filterItemsGetFirestore = query(collectionUsers, orderBy("gender"));
   const q = query(collectionUsers, where("gender", "==", " b[3]"));
-  
-
+  const isFocused = useIsFocused();
   // чтение данных в getDatabase
   //const starCountRef = ref(db, `users/${auth.currentUser.uid}`);
   //onValue(starCountRef, (snapshot) => {
@@ -63,7 +63,7 @@ function audioStatus(){
     const [men, setMen] = useState(['white','#8B4513']);
     const [women, setWomen] = useState(['rgba(0, 0, 0, 0.3)','rgba(128, 128, 128, 0.2)']);
     const [genderPerson, setGenderPerson] = useState('1');
-    const objPerson = [email,login,birth,genderPerson];
+    let objPerson = [email,login,birth,genderPerson];
     
    
 // проверка логина
@@ -112,11 +112,11 @@ function birthVerification(){
   } 
 }  
 // добавления пользователя в getFirestore
-    async  function pushData(Person){
-       onAuthStateChanged(auth, (user) => {
-        if (user) {
-         try {
-           setDoc(doc(dbF, "users", auth.currentUser.uid), {
+    function pushData(Person){
+       
+          //console.log(auth.currentUser.uid)
+          //console.log(Person)
+          setDoc(doc(dbF, "users", auth.currentUser.uid), {
              email: Person[0],
              name: Person[1],
              birthData: Person[2],
@@ -131,14 +131,8 @@ function birthVerification(){
              logickWordPart: 0,
              rangTrue: 0
            });
-        
-          } catch (e) {
-           console.error("Error adding document: ", e);
-           }
-        } else {
-          console.error("Error not auth");
-          }
-      })
+//выходим из аккаунта
+  //setTimeout(()=>{logindelete()},5000)  
     }
 //   
 // проверка пароля
@@ -200,26 +194,72 @@ function birthVerification(){
           dispatch(hidingOpeningRegistration());
         }   
     }
+//обнуления кэш
+const removeValueUp = async () => {
+  try {
+    await AsyncStorage.removeItem('@timbonUp')
+  } catch(e) {
+    console.log(e)
+  }
+}  
+const removeValueUpdate = async () => {
+  try {
+    await AsyncStorage.removeItem('@userValueUpdate')
+  } catch(e) {
+    console.log(e)
+  }
+}
+//добавления данных при регистрации если уже вход произведен
+const setStringValue = async (t) => {
+  try {
+    await AsyncStorage.setItem('@timbon', t)
+  } catch(e) {
+    console.log(e)
+  }
+}    
 // регистрация пользователя   
     function onSignUp(){
+      /*setStringValue('10');
+      const userValue = {
+        numberGames: 0,
+        victory: 0,
+        remembering: 0,
+        smartest: 0,
+        logickWordPart: 0,
+        logickSortingPart: 0, 
+        memoryFiguresPart: 0,
+        memoryBallsPart: 0, 
+      }
+      setUserValueUpdate(JSON.stringify(userValue));*/
+      //goOnline(db);
       audioStatus();
+      removeValueUp();
+      removeValueUpdate();
+      
       if(email !== "" && password !== "" && login !== "" && birth !== ""){
+        
         setActivityIndicatorPosition("absolute");
         setActivityIndicatorDisplay("flex");
         createUserWithEmailAndPassword(auth,email, password)
         .then((userCredential) => {
           
-          console.log('User account created & signed in!');
+          console.log('User account created!');
           const user = userCredential.user;
-          console.log(user.uid)
           
-            const db = getDatabase();
+            
             set(ref(db, 'users/' + user.uid), {
               username: login,
               timbon: 10,
             });
+            console.log(user.uid + "reg")
             pushData(objPerson);
-            props.goToMain.navigate("HomeScreen");//переход на основную страницу
+            
+            if(props.goToMain.getState().routeNames.includes("MainScreen")){
+              
+              setStringValue(JSON.stringify({"timbon":10,"username":login}) )
+              dispatch(menuCenterVisibleСhange(true));
+              props.goToMain.navigate('MainScreen');//переход на основную страницу
+            }
             clearInput();
             setActivityIndicatorPosition("relative");
             setActivityIndicatorDisplay("none");
@@ -238,6 +278,19 @@ function birthVerification(){
       }
     }
 //
+function logindelete(){
+  signOut(auth).then(() => {
+    
+  }).catch((error) => {
+    console.log(error);
+  });
+ }
+useEffect(() => {
+  if(isFocused === false){
+    
+    }
+},[isFocused]) 
+
   const styles = StyleSheet.create({
     MainPageMain:{
       alignItems: 'center',

@@ -238,7 +238,7 @@ async function deleteUsers(){
       alignItems: 'center',
       width: '100%',
       height: '100%',
-      backgroundColor: '#FFCC66', 
+      backgroundColor: '#d1b59d', 
     },
     containerTextAudio:{
       display: 'flex',
@@ -267,7 +267,7 @@ async function deleteUsers(){
       borderBottomRightRadius: 0,
       borderTopRightRadius: 0,
       borderRadius: 10,
-      backgroundColor: 'rgba(240, 255, 240, 0.2)', 
+      backgroundColor: 'rgba(139, 69, 19, 0.3)', 
       marginTop: '4%',
       marginBottom: '3%',
       borderLeftWidth: 1,
@@ -295,7 +295,7 @@ async function deleteUsers(){
     settingTextAutorization:{
       fontSize: 18,
       fontWeight: 'bold',
-      color: '#FAEBD7',
+      color: 'white',
       textShadowRadius: 2,
       textShadowColor: '#696969',
       textShadowOffset: { width: 1, height: 1 },
@@ -305,13 +305,13 @@ async function deleteUsers(){
       padding: 5,
       textAlign: 'center',
       borderLeftWidth: 1,
-      borderLeftColor: "rgba(255, 255, 255,0.5)",
+      borderLeftColor: "rgba(255, 255, 255,0.8)",
       borderTopWidth: 1,
-      borderTopColor: "rgba(255, 255, 255,0.5)",
+      borderTopColor: "rgba(255, 255, 255,0.8)",
       borderRightWidth: 1,
-      borderRightColor: "rgba(0, 0, 0,0.3)",
+      borderRightColor: "rgba(0, 0, 0,0.5)",
       borderBottomWidth: 1,
-      borderBottomColor: "rgba(0, 0, 0,0.3)", 
+      borderBottomColor: "rgba(0, 0, 0,0.5)", 
             
     },
     containerButtonInputEmail:{
@@ -343,11 +343,11 @@ async function deleteUsers(){
       height: 100,
     },
     input:{
-      color: 'black',
+      color: 'white',
       width: 220,
       height: 40,
       fontSize: 18,
-      backgroundColor: 'rgba(128, 128, 128, 0.3)',
+      backgroundColor: 'rgba(192, 192, 192, 0.7)',
       borderBottomColor: 'rgb(128, 128, 128)',
       borderBottomWidth: 2,
       borderStyle: 'solid',
@@ -355,7 +355,7 @@ async function deleteUsers(){
     });
   
     return (
-       <ImageBackground source={require('../../../../assets/img/setting.png')} resizeMode="cover" style={styles.settingСontainer}>
+       <ImageBackground source={require('../../../../assets/img/setting.jpg')} resizeMode="cover" style={styles.settingСontainer}>
          <InputValueValidation target={inputId}/>
          <ScrollView persistentScrollbar={true} style={styles.scrollViewContainer}>
         <View style={styles.containerTextAudio}>

@@ -1,20 +1,27 @@
 import * as React from 'react';
 import { useState, useRef} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity,TextInput,Pressable,ActivityIndicator} from 'react-native';
-
 import LoginSvg from './loginSvg';
 import  InputValueValidation  from "./InputValueValidation";
 import audioClick from '../../../audio-components/audioClick.js'
-
+import {userTrueСhange} from '../../../redux/counterSlice';
 import { initializeApp } from 'firebase/app';
 import  {firebaseConfig}  from '../../../firebaseConfig';
-import {getAuth, onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
+import { getDatabase, ref, set,goOffline} from "firebase/database";
+import {getAuth, signOut, onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
 import { useSelector, useDispatch } from 'react-redux';
-import { hideRevealAuthorization,hideAuthorizationRegistration} from '../../../redux/counterSlice';
+import { hideRevealAuthorization,hideAuthorizationRegistration,menuCenterVisibleСhange} from '../../../redux/counterSlice';
+import {useIsFocused,StackActions  } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  initializeApp(firebaseConfig);
+
+const firebase = initializeApp(firebaseConfig);
+const db = getDatabase(firebase);
+
 export default  function SingUp(props) {
 
+  //Данные пользователя получены
+  const userTrue = useSelector(state => state.counter.userTrue); 
   //проверка статуса звука
   const audioClickStatus = useSelector(state => state.counter.audioClick);
   function audioStatus(){
@@ -27,6 +34,7 @@ export default  function SingUp(props) {
     const [activityIndicatorPosition, setActivityIndicatorPosition] = useState("relative");
     const [activityIndicatorDisplay, setActivityIndicatorDisplay] = useState("none");
     const [resetPasswordColor, setResetPasswordColor] = useState('silver');
+    const [usersDoc, setUsersDoc] = useState('{}');
     const [inputId, setInputId] = useState('');
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
@@ -36,25 +44,93 @@ export default  function SingUp(props) {
     const dispatch = useDispatch();
     const auth = getAuth();
     
+   
+//обнуления кэш
+const removeValue = async () => {
+  try {
+    await AsyncStorage.removeItem('@timbonUp')
+  } catch(e) {
+    console.log(e)
+  }
+}  
+const removeTimbon = async () => {
+  try {
+    await AsyncStorage.removeItem('@timbon')
+  } catch(e) {
+    console.log(e)
+  }
+}  
+const removeUserValue = async () => {
+  try {
+    await AsyncStorage.removeItem('@userValue')
+  } catch(e) {
+    console.log(e)
+  }
+}  
+//установка значений по результатом уровня
+const removeValueUpdate = async () => {
+  try {
+    await AsyncStorage.removeItem('@userValueUpdate')
+  } catch(e) {
+    console.log(e)
+  }
+}   
+//чтение данных пользователя
+async function getUserValue() {
+  try {
+    const value = await AsyncStorage.getItem('@userValue');
+    if(!value){
+      setUsersDoc('{}');
+    }else{
+      setUsersDoc(value);
+    }
+    
+  }
+  catch(e) {
+    console.log(e)
+  } 
+}
+getUserValue();
+//выход из аккаунта
+function logindelete(){
+  signOut(auth).then(() => {
+    
+  }).catch((error) => {
+    console.log(error);
+  });
+ }
   function inSignUp(){
-      audioStatus();
-      setActivityIndicatorPosition("absolute");
-      setActivityIndicatorDisplay("flex");
-      setInputId(""); 
+    logindelete();
     onAuthStateChanged(auth, user => {
       if (user) {
-          
+        
           const uid = user.uid;
           //console.log(uid)
         } else {
           //console.log('error')
         }
     });
+      audioStatus();
+      setActivityIndicatorPosition("absolute");
+      setActivityIndicatorDisplay("flex");
+      setInputId(""); 
+      //console.log(JSON.parse(usersDoc).email != email)
+    if(JSON.parse(usersDoc).email != email){
+        //console.log(JSON.parse(usersDoc).email)
+        removeUserValue();
+        removeValue();
+        removeTimbon();
+        removeValueUpdate();
+        dispatch(userTrueСhange(1));
    signInWithEmailAndPassword(auth,email, password)
       .then((userCredential) => {
-        console.log('User account created & signed in!');
+        
+        console.log('User signed in!');
         const user = userCredential.user;
-        props.goToMain.navigate("HomeScreen");//переход на основную страницу
+        if(props.goToMain.getState().routeNames.includes("MainScreen")){
+          dispatch(menuCenterVisibleСhange(true));
+          props.goToMain.navigate('MainScreen');//переход на основную страницу
+        }
         clearInput();
         setActivityIndicatorPosition("relative");
         setActivityIndicatorDisplay("none");
@@ -63,14 +139,19 @@ export default  function SingUp(props) {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        
         errorEmailPassword(); 
         setInputId("логин или пароль"); 
         setActivityIndicatorPosition("relative");
         setActivityIndicatorDisplay("none");
       });
-     
+      }else{
+        setInputId("Пользователь уже авторизован");
+        setActivityIndicatorPosition("relative");
+        setActivityIndicatorDisplay("none");
+        //console.log(JSON.parse(usersDoc))
+      }
+    
     }
     
     function errorEmailPassword(){

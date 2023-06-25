@@ -5,9 +5,10 @@ import { createStackNavigator,TransitionPresets,CardStyleInterpolators,HeaderSty
 import MainScreen from './main-screen/mainScreen';
 import LevelSelectionNavigationMemory from './main-screen/game-type/memory-game/levelSelectionMemory/levelSelectionNavigationMemory';
 import LevelSelectionNavigationLogic from './main-screen/game-type/logic-game/levelSelectionLogic/levelSelectionNavigationLogic';
-import Menu from './main-screen/menu/menu';
+import ClickGoBack from './main-screen/menu/clickGoBack';
 import MenuCentr from './main-screen/menu/menuCentr';
 
+import MenuContainer from './main-screen/menu/MenuContainer';
 import PointsName from './main-screen/menu/user-data/PointsName';
 import Progress from './progress-page/progress';
 import Correspondence from './correspondence/correspondence';
@@ -18,7 +19,7 @@ import Rang from './ranks/ranks';
 
   const Stack = createStackNavigator();
   
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation,route}) {
   const [alert, setAlert] = useState('');
  
   let user={
@@ -47,25 +48,26 @@ export default function HomeScreen({navigation}) {
     });
  
   }
+  
+  
   //<Text style={styles.Button} onPress={goLink}>push</Text>
   //<Text style={styles.Text} >{alert}</Text>
   return (
     <View style={styles.HomeScreen}>
-      <Stack.Navigator screenOptions={{
-        headerTitleAlign: "center",
-        headerTitle:() => (
-          <MenuCentr menu={navigation}/>),
-        headerStyle: { height: 32},
-        
-        
+      <Stack.Navigator
+      initialRouteName="MainScreen"
+       screenOptions={{
+        headerStyle: {height: 32, },
         headerTransparent: true ,
-        headerRight:() => (
-          <PointsName/>),
+        headerLeftContainerStyle:{left: -35},
+        headerTitle: " ",
         headerLeft:() => (
-          <Menu menu={navigation}/>),
-          ...TransitionPresets.FadeFromBottomAndroid
+          <ClickGoBack goBack={navigation}/>),
+        headerRight:() => (
+          <MenuContainer menu={navigation}/>),
+          ...TransitionPresets.ModalPresentationIOS,  
       }}>
-        <Stack.Screen name="MainScreen" component={MainScreen} options={{headerLeftContainerStyle:{top: -32}}}/>
+        <Stack.Screen name="MainScreen" component={MainScreen} options={{headerLeftContainerStyle:{top: -50},}}/>
         <Stack.Screen
           name="levelSelectionNavigationMemory" 
           component={LevelSelectionNavigationMemory} 
@@ -76,40 +78,36 @@ export default function HomeScreen({navigation}) {
           options={{headerShown: false}}/>
         <Stack.Screen
           name="Progress" 
-          component={Progress} 
-          options={{headerTitleContainerStyle:{top: -32}}}/>
+          component={Progress} />
         <Stack.Screen
           name="Correspondence" 
-          component={Correspondence} 
-          options={{headerTitleContainerStyle:{top: -32}}}
-         />
+          component={Correspondence} />
         <Stack.Screen
           name="Authorization" 
-          component={Authorization} 
-          options={{headerTitleContainerStyle:{top: -32}}}/>
+          component={Authorization}/>
         <Stack.Screen
           name="Setting" 
-          component={Setting} 
-          options={{headerTitleContainerStyle:{top: -32}}}
-          />
+          component={Setting}/>
         <Stack.Screen
           name="Rang" 
-          component={Rang} 
-          options={{headerTitleContainerStyle:{top: -32}}}
-          />
+          component={Rang}/> 
       </Stack.Navigator>  
     </View>
   )};
 
   const styles = StyleSheet.create({
     HomeScreen:{
+      justifyContent: 'space-between',
+      width: '100%',
       height: '100%',
+      backgroundColor: 'transparent',
+      flexDirection: 'row',
     },
     MainPageHeader: {
       justifyContent: 'space-between',
       width: '100%',
       height: '10%',
-      backgroundColor: 'yellow',
+      backgroundColor: 'transparent',
       flexDirection: 'row',
     },
     Button: {
@@ -120,6 +118,6 @@ export default function HomeScreen({navigation}) {
     Text: {
       width: 150,
       height: 50,
-      backgroundColor: 'white',
+      
     }
   });

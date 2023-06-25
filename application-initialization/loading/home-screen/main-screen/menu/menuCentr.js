@@ -8,13 +8,45 @@ import RegistLoginSvg  from './registLoginSvg';
 import SettingSvg  from './settingSvg';
 import ProgressSvg  from './progressSvg';
 import RangSvg  from './rangSvg';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MailSvg  from './mailSvg';
+import ErrorDoubleSingUp  from '../../../authorization/errorDoubleSingUp';
+import {  menuCenterVisibleСhange, } from '../../../../../redux/counterSlice';
+
 
 export default function menuCentr(props) {
 
-  
+  const dispatch = useDispatch()
   const [backgroundColorClick, setBackgroundColorClick] = useState("rgb(205, 92, 92)");
+  const [timbonUp, setTimbonUp] = useState(false);
+  const userTrue = useSelector(state => state.counter.userTrue); 
+//проверка повторного входа за одну сесию при условиии если пользователь играл в игры вход запретить
+  const getTimbonUp = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@timbonUp');
+      
+      if(value != null){
+        
+        if(JSON.parse(userTrue).timbon != value ){
+          
+          setTimbonUp(true)
+        }else{
+          setTimbonUp(false)
+          dispatch(menuCenterVisibleСhange(false));
+          props.linkGo.menu.navigate('Authorization');
+        }
+      }  else{
+        setTimbonUp(false)
+        dispatch(menuCenterVisibleСhange(false));
+        props.linkGo.menu.navigate('Authorization');
+      }
+      
+    } catch(e) {
+      console.log(e)
+    } 
+  }
+  
+//
 //проверка статуса звука
 const audioClickStatus = useSelector(state => state.counter.audioClick);
 function audioStatus(){
@@ -27,57 +59,56 @@ function audioStatus(){
     audioStatus();
     setBackgroundColorClick(()=>{return backgroundColorClick ? "rgb(205, 92, 92)"  : '#8B0000'});
     setTimeout(()=>{
-      props.menu.navigate('MainScreen');
+      
+      props.linkGo.menu.navigate('MainScreen');
     },1)
 
   }
   function clickGoProgress(){
     audioStatus();
     setTimeout(()=>{
-      props.menu.navigate('Progress');
+      dispatch(menuCenterVisibleСhange(false));
+      props.linkGo.menu.navigate('Progress');
     },1)
   }
   function clickGoRang(){
     audioStatus();
     setTimeout(()=>{
-      props.menu.navigate('Rang');
+      dispatch(menuCenterVisibleСhange(false));
+      props.linkGo.menu.navigate('Rang');
     },1)
   }
   function clickGoCorrespondence(){
     audioStatus();
     setTimeout(()=>{
-      props.menu.navigate('Correspondence');
+      dispatch(menuCenterVisibleСhange(false));
+      props.linkGo.menu.navigate('Correspondence');
     },1)
   }
   function clickGoRegistLogin(){
     audioStatus();
-    setTimeout(()=>{
-      props.menu.navigate('Authorization');
-    },1)
+    getTimbonUp();
   }
   function clickGoSetting(){
     audioStatus();
     setTimeout(()=>{
-      props.menu.navigate('Setting');
+      dispatch(menuCenterVisibleСhange(false));
+      props.linkGo.menu.navigate('Setting');
+      
     },1) 
     
   }
-
+  
     const styles = StyleSheet.create({
       menuButtonСontainer:{
         display: 'flex',
         flexDirection: 'row',
-        opacity: 1,
-        width: 'auto',
+        width: 560,
         height: 'auto',
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
         
         
-        },
-        wrapperCustom: {
-          borderRadius: 8,
-          padding: 6
         },
       menuButton:{ 
         backgroundColor: "rgb(205, 92, 92)",
@@ -93,6 +124,7 @@ function audioStatus(){
 
     return (
       <View style={styles.menuButtonСontainer}>
+        <ErrorDoubleSingUp state = {timbonUp}/>
         <Pressable
        onPressOut={() => clickGoHome()}
         style={({ pressed }) => [

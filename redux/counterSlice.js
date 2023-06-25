@@ -1,14 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initializeApp } from 'firebase/app';
-import  {firebaseConfig}  from '../firebaseConfig';
-import { getDatabase, ref, set,onValue,get,child,update } from "firebase/database";
-import {getAuth, onAuthStateChanged, createUserWithEmailAndPassword} from 'firebase/auth';
-
-
-initializeApp(firebaseConfig);
-const db = getDatabase();
-const auth = getAuth();
-let sumPointer;
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -20,14 +10,14 @@ export const counterSlice = createSlice({
     timeGameEnd: false,
 //результат уровня
     stateRezultat: '',
-//
-    positionStatus: "relative",
 //уровень сложности
     numberLevel: 3,
 //названия игры
     nameGame: '',
 //промежуточный результат между экранами
     intermediateResultMemory: '',
+//промежуточный результат во время уровня
+    intermediateResult: 0,
 //управления появлением AlertTextMission в уровнях
     numberGame: 1,
 //наличия звука 
@@ -35,6 +25,10 @@ export const counterSlice = createSlice({
     audioGame: true,
     audioGameState: true,
     audioLevel: true,
+//Данные пользователя получены 
+    userTrue: null,
+//Видимость меню 
+    menuCenterVisible: true,
   },
   reducers: {
     hidingOpeningRegistration: state => {
@@ -62,13 +56,6 @@ export const counterSlice = createSlice({
 //проверка результатов уровня
     incrementByAmount: (state, action) => {
       let resultSecurity=[];
-      const starCountRef = ref(db, `users/${auth.currentUser.uid}`);
-      onValue(starCountRef, (snapshot) => {
-        const data = Object(snapshot.val());
-        sumPointer = data.timbon;
-      
-      }); 
-      
       action.payload[0].forEach(element => {
         
         if(action.payload[1].includes(element) === true){
@@ -83,37 +70,15 @@ export const counterSlice = createSlice({
           if(action.payload[0].length < action.payload[1].length){
             resultSecurity.push("false");
           }
-
-        if(resultSecurity.includes("false")){
-          state.stateRezultat = "false";
-          if(state.numberLevel < 5){
-            update(starCountRef, {timbon: sumPointer - 1});
+          if(resultSecurity.includes("false")){
+            state.stateRezultat = "false";
+          }else{
+            state.stateRezultat = "true"; 
           }
-          if(state.numberLevel >= 5 && state.numberLevel < 8){
-            update(starCountRef, {timbon: sumPointer - 2});
-          } 
-          if(state.numberLevel >= 8){
-            update(starCountRef, {timbon: sumPointer - 3});
-          }  
-        }else{
-          state.stateRezultat = "true";
-           if(state.numberLevel < 5){
-            console.log(resultSecurity)
-            update(starCountRef, {timbon: sumPointer + 1});
-           }
-           if(state.numberLevel >= 5 && state.numberLevel < 8){
-            update(starCountRef, {timbon: sumPointer + 1});
-           } 
-           if(state.numberLevel >= 8){
-            update(starCountRef, {timbon: sumPointer + 1});
-           }
-        }   
-    },
-    positionStatusAbsolute: state => {
-      state.positionStatus = "absolute";
-    },
+ 
+      },
     positionStatusRelative: state => {
-      state.positionStatus = "relative";
+      state.positionStatus = "none";
     },
     numberLevelChangePlus: state => {
       state.numberLevel += 1;
@@ -145,6 +110,15 @@ export const counterSlice = createSlice({
     audioLevelСhange: (state, action) =>  {
       state.audioLevel = action.payload;
     },
+    userTrueСhange: (state, action) =>  {
+      state.userTrue = action.payload;
+    },
+    menuCenterVisibleСhange: (state, action) =>  {
+      state.menuCenterVisible = action.payload;
+    },
+    intermediateResultChange: (state, action) =>  {
+      state.intermediateResult = action.payload;
+    },
   }
 })
 
@@ -155,8 +129,6 @@ export const {
   hideAuthorizationRegistration,
   timeGameTrue,
   timeGameFalse,
-  positionStatusAbsolute,
-  positionStatusRelative,
   incrementByAmount,
   numberLevelChangePlus,
   numberLevelChangeMinus,
@@ -167,6 +139,10 @@ export const {
   audioGameСhange,
   audioClickСhange,
   audioLevelСhange,
-  audioGameStateСhange } = counterSlice.actions
+  audioGameStateСhange,
+  userTrueСhange,
+  menuCenterVisibleСhange,
+  intermediateResultChange
+   } = counterSlice.actions
 
 export default counterSlice.reducer

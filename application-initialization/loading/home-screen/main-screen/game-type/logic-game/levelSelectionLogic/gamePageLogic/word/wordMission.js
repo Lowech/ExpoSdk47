@@ -5,7 +5,7 @@ import { StyleSheet, View,ImageBackground, Dimensions} from 'react-native';
 import WordMass from './wordMass';
 import audioClick from '../../../../../../../../../audio-components/audioClick.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus } from '../../../../../../../../../redux/counterSlice';
+import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus,audioLevelСhange } from '../../../../../../../../../redux/counterSlice';
 
 import AlertTextMission from '../../../../alertFail/alertTextMission/alertTextMission';
 import TimerStart from '../../../../timerStart';
@@ -34,12 +34,14 @@ async function stopSound() {
     await sound.current.stopAsync()
     await sound.current.unloadAsync();
 }
+
 useEffect(()=>{
   if(audioLevelStatus === true){
     playSound()
   }else{
     if(sound.current._loaded === true){
-      stopSound()
+      stopSound();
+      dispatch(audioLevelСhange(true));
     }
   } 
 },[audioLevelStatus])
@@ -104,7 +106,7 @@ useEffect(()=>{
 
 
     return (
-      <ImageBackground source={require('../../../../../../../../../assets/img/wordFoon.png')} resizeMode="cover" style={styles.containerImg}> 
+      <ImageBackground source={require('../../../../../../../../../assets/img/789.jpg')} resizeMode="cover" style={styles.containerImg}> 
           <WordMass colElemTrue={numberLevel+1} colElemFalse={colElemFalse}  colBlock={colBlock} navigation={{navigation}}/>  
           <AlertTextMission  text={'text'}/>
           <TimerStart />
@@ -118,7 +120,7 @@ useEffect(()=>{
       width: '100%',
       height: '100%',
       display: "flex",
-      backgroundColor: 'yellow',
+      backgroundColor: '#8591a9',
       
     },
     container: {   

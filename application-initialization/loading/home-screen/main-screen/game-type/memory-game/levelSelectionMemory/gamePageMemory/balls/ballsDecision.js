@@ -97,9 +97,6 @@ const VisibleNumberPlusRed = () => {
   clickElementColor.push("red")
   setNumberRed(numberRed+1)
 }
-useEffect(()=>{
-  numberRed
-},[numberRed])
 const VisibleNumberMinusRed = () => {
   audioStatus();
   if(numberRed==0)return;
@@ -321,7 +318,7 @@ if(isFocused === true){
 },[isFocused])
 //
     return (
-      <ImageBackground source={require('../../../../../../../../../assets/img/balls.png')} resizeMode="cover" style={styles.containerImg}> 
+      <ImageBackground source={require('../../../../../../../../../assets/img/bal.jpg')} resizeMode="cover" style={styles.containerImg}> 
         <Scoring selectionResult={selectionResult} navig={navigation}/>
         <Timer startTimer={elementState} />
         <TimerStart />
@@ -593,7 +590,7 @@ if(isFocused === true){
     elemItemSumm:{
         width: 40,
         height: 65, 
-        color: '#7B68EE',
+        color: '#00FFFF',
         textAlign: "center",
         textAlignVertical: "top",
         fontWeight: "700",

@@ -4,7 +4,7 @@ import {useState,useEffect} from 'react';
 import {useIsFocused } from '@react-navigation/native';
 import audioClick from '../../../../../../../../../audio-components/audioClick.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { timeGameFalse, incrementByAmount } from '../../../../../../../../../redux/counterSlice';
+import FonText from '../fonText.js';
 import Scoring from '../../../../scoring';
 
 
@@ -79,6 +79,17 @@ function audioStatus(){
       textShadowRadius: 5,
       textShadowOffset:  { width: 1, height: 1 },
       
+    },
+    textGradient:{
+      position: 'absolute',
+      //zIndex: -1,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: 10,
+      
     }
   })
 
@@ -139,53 +150,83 @@ for(; step < props.colBlock; step++){
     {
         rezultMass.splice(props.sortRandomElem[0],1,
           <Pressable key={props.massRandomElemTrue[0]+massElementColor[0]} style={[styles.textBlock,themeBackColorZero]} onPress={()=>ClickElemMassZero(props.massRandomElemTrue[0])}>
+            <View style={styles.textGradient}>
+              <FonText />
+            </View>
             <Text key={props.massRandomElemTrue[0]+massElementColor[0]} style={[styles.text,{color:massElementColor[0]}]} >{props.massRandomElemTrue[0]}</Text>
           </Pressable>)
         rezultMass.splice(props.sortRandomElem[1],1,
           <Pressable key={props.massRandomElemTrue[1]+massElementColor[1]} style={[styles.textBlock,themeBackColorOne]} onPress={()=>ClickElemMassOne(props.massRandomElemTrue[1])}>
+            <View style={styles.textGradient}>
+              <FonText />
+            </View>
             <Text key={props.massRandomElemTrue[1]+massElementColor[1]} style={[styles.text,{color:massElementColor[1]}]} >{props.massRandomElemTrue[1]}</Text>
           </Pressable>)
         rezultMass.splice(props.sortRandomElem[2],1,
           <Pressable key={props.massRandomElemTrue[2]+massElementColor[2]} style={[styles.textBlock,themeBackColorTwo]} onPress={()=>ClickElemMassTwo(props.massRandomElemTrue[2])}>
+            <View style={styles.textGradient}>
+              <FonText />
+            </View>
             <Text key={props.massRandomElemTrue[2]+massElementColor[2]} style={[styles.text,{color:massElementColor[2]}]} >{props.massRandomElemTrue[2]}</Text>
           </Pressable>)
         rezultMass.splice(props.sortRandomElem[3],1,
           <Pressable key={props.massRandomElemTrue[3]+massElementColor[3]} style={[styles.textBlock,themeBackColorThree]} onPress={()=>ClickElemMassThree(props.massRandomElemTrue[3])}>
+            <View style={styles.textGradient}>
+              <FonText />
+            </View>
             <Text key={props.massRandomElemTrue[3]+massElementColor[3]} style={[styles.text,{color:massElementColor[3]}]} >{props.massRandomElemTrue[3]}</Text>
           </Pressable>)
         if(props.sortRandomElem.length > 4){
         rezultMass.splice(props.sortRandomElem[4],1,
           <Pressable key={props.massRandomElemTrue[4]+massElementColor[4]} style={[styles.textBlock,themeBackColorFour]} onPress={()=>ClickElemMassFour(props.massRandomElemTrue[4])}>
+            <View style={styles.textGradient}>
+              <FonText />
+            </View>
             <Text key={props.massRandomElemTrue[4]+massElementColor[4]} style={[styles.text,{color:massElementColor[4]}]} >{props.massRandomElemTrue[4]}</Text>
           </Pressable>)
         }
         if(props.sortRandomElem.length > 5){
           rezultMass.splice(props.sortRandomElem[5],1,
             <Pressable key={props.massRandomElemTrue[5]+massElementColor[5]} style={[styles.textBlock,themeBackColorFive]} onPress={()=>ClickElemMassFive(props.massRandomElemTrue[5])}>
+              <View style={styles.textGradient}>
+              <FonText />
+            </View>
               <Text key={props.massRandomElemTrue[5]+massElementColor[5]} style={[styles.text,{color:massElementColor[5]}]} >{props.massRandomElemTrue[5]}</Text>
             </Pressable>)
          }
         if(props.sortRandomElem.length > 6){
         rezultMass.splice(props.sortRandomElem[6],1,
           <Pressable key={props.massRandomElemTrue[6]+massElementColor[6]} style={[styles.textBlock,themeBackColorSix]} onPress={()=>ClickElemMassSix(props.massRandomElemTrue[6])}>
+            <View style={styles.textGradient}>
+              <FonText />
+            </View>
             <Text key={props.massRandomElemTrue[6]+massElementColor[6]} style={[styles.text,{color:massElementColor[6]}]} >{props.massRandomElemTrue[6]}</Text>
           </Pressable>)
         }
         if(props.sortRandomElem.length > 7){
           rezultMass.splice(props.sortRandomElem[7],1,
             <Pressable key={props.massRandomElemTrue[7]+massElementColor[7]} style={[styles.textBlock,themeBackColorSeven]} onPress={()=>ClickElemMassSeven(props.massRandomElemTrue[7])}>
+              <View style={styles.textGradient}>
+              <FonText />
+            </View>
               <Text key={props.massRandomElemTrue[7]+massElementColor[7]} style={[styles.text,{color:massElementColor[7]}]} >{props.massRandomElemTrue[7]}</Text>
             </Pressable>)
           }
         if(props.sortRandomElem.length > 8){
           rezultMass.splice(props.sortRandomElem[8],1,
             <Pressable key={props.massRandomElemTrue[8]+massElementColor[8]} style={[styles.textBlock,themeBackColorEight]} onPress={()=>ClickElemMassEight(props.massRandomElemTrue[8])}>
+              <View style={styles.textGradient}>
+              <FonText />
+            </View>
               <Text key={props.massRandomElemTrue[8]+massElementColor[8]} style={[styles.text,{color:massElementColor[8]}]} >{props.massRandomElemTrue[8]}</Text>
             </Pressable>)
         }
         if(props.sortRandomElem.length > 9){
           rezultMass.splice(props.sortRandomElem[9],1,
             <Pressable key={props.massRandomElemTrue[9]+massElementColor[9]} style={[styles.textBlock,themeBackColorNine]} onPress={()=>ClickElemMassNine(props.massRandomElemTrue[9])}>
+              <View style={styles.textGradient}>
+              <FonText />
+            </View>
               <Text key={props.massRandomElemTrue[9]+massElementColor[9]} style={[styles.text,{color:massElementColor[9]}]} >{props.massRandomElemTrue[9]}</Text>
             </Pressable>)
         }
@@ -308,13 +349,12 @@ useEffect(()=>{
         setThemeBackColorNine(styles.textBlock);
     }
   }
+  //
   return ( 
     <View style={styles.container}>
       <View style={styles.MainPageMain}>
-        {rezultMass}
-       
-      </View>
-      
+        {rezultMass} 
+      </View>  
       <Scoring selectionResult = {selectionResult} navig={props.navigation.navigation} />
     </View> 
   )

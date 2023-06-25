@@ -381,13 +381,34 @@ const  carBrandsMass =  ['Audi', 'BMW','Skoda', 'Toyota', 'Volkswagen', 'Acura'
   'Geely', 'Great Wall', 'Haima', 'Haval',"JAC","Lifan","Luxgen","Zotye"]
   const presidentsMass = ["Джордж Вашингтон", "Джон Адамс", "Томас Джефферсон", "Джеймс Мэдисон", "Джеймс Монро", "Джон Куинси", "Андреас Джексон",
   "Мартин Ван Бюрен", "Уильям Гаррисон", "Джон Тилден", "Джеймс К. Полк", "Захария Таунсенд", "Джеймс Буч", "Абрахам Линкольн", "Эндрю Джонсон",
-   "Уолтер Грант", "Рузвельт Рейган", "Джордж Буш Старший", "Билл Клинтон", "Джордж Буш Младший", "Барак Обама", "Дональд Трамп", "Джо Байден"];
-   
-
-   let massObj = [englishAlphabet,animalHerbivores,graphicShapes,russianAlphabet,animalsPredatory,romanNumerals,
+   "Уолтер Грант", "Рузвельт Рейган", "Джордж Буш Ст.", "Билл Клинтон", "Джордж Буш Мл.", "Барак Обама", "Дональд Трамп", "Джо Байден"];
+  const layersEarthMass = ["Внутреннее ядро", "Внешнее ядро", "Мантия","Верхняя мантия", "Земная кора","Тропосфера", "Стратосфера", "Мезосфера", "Термосфера", "Эксосфера"];
+  const colorMass = ["Красный", "Оранжевый", "Желтый", "Зеленый", "Голубой", "Индиго", "Фиолетовый", "Розовый", "Лиловый", "Коричневый", "Серый", "Черный", "Белый"];
+  const humanOrgansMass = ["Головной мозг", "Глаза", "Уши", "Нос", "Рот", "Гортань", "Желудок", "Печень", "Поджелудочная железа", "Селезенка", 
+  "Кишечник", "Почки", "Мочевыделительные пути", "Сердце", "Легкие", "Сосуды", "Мышцы", "Кожа", "Кости", "Жировые клетки"];
+  const flowersMass = ["Роза", "Тюльпан", "Лилия", "Орхидея", "Хризантема", "Калла", "Сирень", "Флокс", "Пион", "Нарцисс", "Дачник", 
+  "Гладиолус", "Георгин", "Астра", "Альстромерия", "Ландыш", "Сакура", "Кустарники", "Гиацинт", "Жасмин", "Лотос",
+   "Магнолия", "Фрезия", "Ирис", "Мимоза", "Гербарий", "Непальский хризантемум", "Пеларгония", "Календула", "Ромашка",
+    "Снежное копыто", "Колокольчики", "Ландыш", "Подснежник", "Лилейник", "Клематис", "Троянда", "Лаванда", "Дикие цветы",
+     "Герань", "Чертополох", "Одуванчик", "Петуния", "Маргаритка", "Георгина", "Мак", "Лилейный куст", "Гелиотроп", 
+     "Василек", "Лотос", "Розмарин", "Маргарита", "Подснежник", "Гибискус", "Примула"];
+  const codWorldMass =  ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
+    "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL",  "BSD", "BTC", "BTN",
+    "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLF",  "CLP", "CNH", "CNY", "COP", "CRC", "CUC",
+    "CUP", "CVE", "CZK", "DJF",  "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP",
+    "FOK", "GBP", "GEL", "GGP", "GHS", "GIP", "GMD",  "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", 
+    "HTG", "HUF", "IDR", "ILS",  "IMP", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES",
+    "KGS",  "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR",  "LRD", "LSL",
+    "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT","MOP", "MRU", "MUR", "MVR", "MWK", "MXN",
+    "MYR", "MZN", "NAD",  "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", 
+    "PHP",  "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD",  "SCR", "SDG",
+    "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STN",  "SYP", "SZL", "THB", "TJS", "TMT",
+    "TND", "TOP", "TRY", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VES", "VND",  "VUV",
+     "WST", "XAF", "XAG", "XAU", "XCD", "XDR", "XOF", "XPD", "XPF",  "XPT", "YER", "ZAR", "ZMW", "ZWL"]
+  let massObj = [englishAlphabet,animalHerbivores,graphicShapes,russianAlphabet,animalsPredatory,romanNumerals,
     fullBirds,hieroglyphs,numberMass,horoscopeMass,monthsMass,ranksArmyMass,countriesMass,familyMass,chineseHoroscopeMass,
     fishesMass,cardsMass,fruitMass,TimerIntervalMass,dateCalendarMass,veggiesMass,berriesMass,woodMass,tableElemMendMass,
-    godsGreekMass,carBrandsMass,presidentsMass];
+    godsGreekMass,carBrandsMass,presidentsMass,layersEarthMass,colorMass,humanOrgansMass,flowersMass,codWorldMass];
 //
 //массивы выбранных элементов рандомно
 let  massRandomElemTrue = [];

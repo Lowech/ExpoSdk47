@@ -6,7 +6,7 @@ import audioClick from '../../../../../../../../../audio-components/audioClick.j
 import { useSelector, useDispatch } from 'react-redux';
 import { timeGameFalse, incrementByAmount } from '../../../../../../../../../redux/counterSlice';
 import Scoring from '../../../../scoring';
-
+import FonText from '../fonText.js';
 
 //массив выбранных элементов пользователем
 let clickElem = [];
@@ -32,9 +32,6 @@ let rezultMass = [];
 let rezultBox = [];
 //начальный массив значений результата уровня
 const [selectionResult, setSelectionResult] = useState([]);
-useEffect(()=>{
-  
-},[])
 //
 //анимация элементов верхнии блоки
 const themeBackSizeZero = useRef(new Animated.Value(23)).current;
@@ -126,6 +123,9 @@ for(; step < props.colBlock; step++){
     { 
         rezultMass.splice(props.sortRandomElem[0],1,
             <Pressable  key={props.sortMass[0]+massElementColor[0]} style={[styles.textBlock]} onPressIn ={(e)=>ClickElemMassZero(props.sortMass[0],e)}>
+                <View style={styles.textGradient}>
+              <FonText />
+            </View>
                 <Animated.Text key={props.sortMass[0]+massElementColor[0]} style={[styles.text,{color:massElementColor[0],fontSize: themeBackSizeZero}]} >{props.sortMass[0]}</Animated.Text>
             </Pressable>)
         rezultMass.splice(props.sortRandomElem[1],1,
@@ -3630,17 +3630,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    width: 200,
-    height: 45,
+    width: 280,
+    height: 40,
     borderRadius: 10,
-    backgroundColor: 'red',
+    
     zIndex: 9999,
   },
   textBlockZero:{
     width: 100,
-    height: 45,
+    height: 40,
     borderRadius: 10,
-    backgroundColor: 'red',
+   
   },
   text:{ 
     width: "auto",
@@ -3658,25 +3658,25 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '30%',
     zIndex: -1,
-    backgroundColor: 'rgba(250, 235, 215,0.2)',
+    
   },
   reaultContainerBox:{
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 120,
+    width: 150,
     margin: 5,
-    backgroundColor: 'rgba(250, 235, 215,0.2)',
+    backgroundColor: '#008080',
     borderRadius: 10,
-    borderLeftWidth: 1,
-    borderLeftColor: "rgba(255, 255, 255,0.5)",
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255, 255, 255,0.5)",
-    borderRightWidth: 1,
-    borderRightColor: "rgba(0, 0, 0,0.3)",
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(0, 0, 0,0.3)",
+    borderLeftWidth: 2,
+    borderLeftColor: "rgba(255, 255, 255,0.8)",
+    borderTopWidth: 2,
+    borderTopColor: "rgba(255, 255, 255,0.8)",
+    borderRightWidth: 2,
+    borderRightColor: "rgba(0, 0, 0,0.5)",
+    borderBottomWidth: 2,
+    borderBottomColor: "rgba(0, 0, 0,0.5)",
   },
   textBottomBox:{
     position: 'absolute',
@@ -3686,4 +3686,15 @@ const styles = StyleSheet.create({
     textShadowOffset:  { width: 1, height: 1 },
     fontSize: 100
   },
+  textGradient:{
+    position: 'absolute',
+    //zIndex: -1,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+    
+  }
 })

@@ -1,18 +1,20 @@
 import React,{ useState,useRef,useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { positionStatusRelative } from '../../../../../../redux/counterSlice';
 
-export default function AlertError() {
-  const dispatch = useDispatch()
-  const positionStatusState = useSelector(state => state.counter.positionStatus);
- 
+export default function AlertError(props) {
+  
   function positionStatus(){
-    dispatch(positionStatusRelative())
+    setPositionStatusNoneFlex('none')
   }
+  const [positionStatusNoneFlex, setPositionStatusNoneFlex] = useState('none');
+  useEffect(()=>{
+    if(props.positionStatusNoneFlex === "flex"){
+      setPositionStatusNoneFlex('flex')
+    }
+  },[props.positionStatusNoneFlex])
 const styles = StyleSheet.create({
   menuButtonСontainer:{
-    display: "none",
+    display: positionStatusNoneFlex,
     flexDirection: 'row',
     flexWrap: "wrap",
     justifyContent: 'center',
@@ -20,10 +22,10 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 20,
     backgroundColor: 'rgba(128, 128, 128,0.5)',
-    position: positionStatusState,
+    position: "absolute",
     zIndex: 99999,
-    right: -20,
-    bottom: 60,
+    left: '-10%',
+    top: '-15%',
     paddingHorizontal: 10,
   },
   MessageResultat:{

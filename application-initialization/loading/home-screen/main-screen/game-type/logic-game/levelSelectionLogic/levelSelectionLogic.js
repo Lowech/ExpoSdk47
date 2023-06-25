@@ -5,7 +5,7 @@ import audioClick from '../../../../../../../audio-components/audioClick.js';
 import { useSelector,useDispatch } from 'react-redux';
 import {audioGameStateСhange,audioClickСhange,audioLevelСhange} from '../../../../../../../redux/counterSlice';
 
-export default  function LevelSelection({navigation}) {
+export default  function LevelSelectionLogic({navigation}) {
 //проверка статуса звука
 const audioClickStatus = useSelector(state => state.counter.audioClick);
 function audioStatus(){
@@ -33,7 +33,7 @@ function GoGameSortingMission(){
 }
 
   return (
-    <ImageBackground source={require('../../../../../../../assets/img/fonLogick.png')} resizeMode="cover" style={styles.MainPageMain}>
+    <ImageBackground source={require('../../../../../../../assets/img/zzz.jpg')} resizeMode="cover" style={styles.MainPageMain}>
         <TouchableOpacity style={styles.GameIconsContainer}  onPress={GoGameWordMission}>
           <Image source={require('../../../../../../../assets/img/word.png')} resizeMode="cover" style={styles.GameIcons}/>
         </TouchableOpacity >
@@ -51,7 +51,7 @@ function GoGameSortingMission(){
       flexDirection: "row",
       width: '100%',
       height: '100%',
-      backgroundColor: '#339db2',
+      backgroundColor: '#000000',
     },
     GameIcons:{
         width: '100%',

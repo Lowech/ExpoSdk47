@@ -32,4 +32,5 @@ function RegistLoginSvg() {
   </Svg>
   )
 }
+
 export default RegistLoginSvg;

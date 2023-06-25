@@ -331,7 +331,7 @@ clickElementFiguresMass= [];
 },[isFocused])
 //
     return (
-      <ImageBackground source={require('../../../../../../../../../assets/img/figuresFon.png')} resizeMode="cover" style={styles.containerImg}> 
+      <ImageBackground source={require('../../../../../../../../../assets/img/1222.jpg')} resizeMode="cover" style={styles.containerImg}> 
         <Scoring selectionResult={selectionResult} navig={navigation}/>
         <Timer startTimer={elementState}/>
         <TimerStart />

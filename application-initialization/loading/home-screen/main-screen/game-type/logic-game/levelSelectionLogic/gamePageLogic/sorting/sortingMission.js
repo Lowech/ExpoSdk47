@@ -5,7 +5,7 @@ import { StyleSheet, View,ImageBackground, Dimensions} from 'react-native';
 import SortingMass from './sortingMass';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus } from '../../../../../../../../../redux/counterSlice';
+import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus,audioLevelСhange } from '../../../../../../../../../redux/counterSlice';
 import {Audio} from 'expo-av';
 
 import AlertTextMission from '../../../../alertFail/alertTextMission/alertTextMission';
@@ -35,12 +35,14 @@ async function stopSound() {
     await sound.current.stopAsync()
     await sound.current.unloadAsync();
 }
+
 useEffect(()=>{
   if(audioLevelStatus === true){
     playSound()
   }else{
     if(sound.current._loaded === true){
-      stopSound()
+      stopSound();
+      dispatch(audioLevelСhange(true));
     }
   } 
 },[audioLevelStatus])
@@ -92,7 +94,7 @@ useEffect(()=>{
 
 
     return (
-      <ImageBackground source={require('../../../../../../../../../assets/img/logickSortFon.png')} resizeMode="cover" style={styles.containerImg}> 
+      <ImageBackground source={require('../../../../../../../../../assets/img/147852.jpg')} resizeMode="cover" style={styles.containerImg}> 
           <SortingMass colElemTrue={numberLevel}  colBlock={colBlock} heightElem={heightElem} navigation={{navigation}}/>  
           <AlertTextMission  text={'сортировка'}/>
           <TimerStart />
@@ -106,7 +108,7 @@ useEffect(()=>{
       width: '100%',
       height: '100%',
       display: "flex",
-      backgroundColor: '#f56336',
+      backgroundColor: '#DEB887',
       
     },
     container: {   
@@ -136,7 +138,6 @@ useEffect(()=>{
       margin: 5,
       width: 230,
       height: 40,
-      backgroundColor: 'blue', 
       borderRadius: 10,
       
     },
@@ -150,7 +151,6 @@ useEffect(()=>{
       display: 'flex',
       width: 70,
       height: 40,
-      backgroundColor: 'blue', 
       left: '95%'
 
     }

@@ -8,14 +8,14 @@ function ImgLogic() {
     y={0}
     viewBox="2 0 16 16"
     xmlSpace="preserve">
-<Rect  x="0" y="1" stroke="#8B4513" fill="rgba(255, 250, 250,0.3)" strokeWidth="0.1" width="15" height="5" rx="2" ry="2"/>  
+<Rect  x="0" y="1" stroke="#8B4513" fill="rgba(205, 92, 92,0.8)" strokeWidth="0.1" width="15" height="5" rx="2" ry="2"/>  
 <Line  x1="2" y1="3.5" x2="4" y2="3.5" stroke="red" strokeWidth="2" /> 
 <Circle  cx="7" cy="3.5" r="1.1" fill="yellow"/>
 <Polyline  points="10,4.5 11.5,2.5 13,4.5 9.9,4.5" stroke="green" fill="green" strokeWidth="0.1" />
 
-<Circle  cx="24" cy="5" r="4"  fill="rgba(30, 144, 255,0.4)" />
-<Circle  cx="15" cy="9" r="1" fill="rgba(30, 144, 255,0.4)" />
-<Circle  cx="18" cy="7.5" r="1.5"  fill="rgba(30, 144, 255,0.4)"/>
+<Circle  cx="24" cy="5" r="4"  fill="rgba(30, 144, 255,0.6)" />
+<Circle  cx="15" cy="9" r="1" fill="rgba(30, 144, 255,0.6)" />
+<Circle  cx="18" cy="7.5" r="1.5"  fill="rgba(30, 144, 255,0.7)"/>
 <Circle  cx="26" cy="4" r="1.1" fill="red" />
 <Polyline  points="21,5 22.5,2.5 24,5 21,5" stroke="green" fill="green" strokeWidth="0.1" />
 <Line  x1="23" y1="7" x2="25" y2="7" stroke="blue" strokeWidth="2" strokeMiterlimit="20"/>

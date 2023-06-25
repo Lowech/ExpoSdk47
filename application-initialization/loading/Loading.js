@@ -4,16 +4,20 @@ import PasswordRecovery from './authorization/password-recovery/PasswordRecovery
 import { useState, useEffect } from 'react';
 
 import { useSelector,useDispatch } from 'react-redux';
+import {userTrueСhange} from '../../redux/counterSlice';
 import { StyleSheet, View} from 'react-native';
 import { createStackNavigator,TransitionPresets} from '@react-navigation/stack';
 //import DrawerButtonContainers from '../../application-initialization/loading/drawer-button-containers/DrawerButtonContainers';
 import HomeScreen from '../../application-initialization/loading/home-screen/HomeScreen';
+import WaitingDownload from '../WaitingDownload';
 import {Audio} from 'expo-av';
+
 
 const Stack = createStackNavigator();
 
 export default  function Loading(props) {
-
+  const dispatch = useDispatch();
+//console.log(props.rezult+"???????????")
 //музыка
   const audioGameStatus = useSelector(state => state.counter.audioGame);
   const audioGameState = useSelector(state => state.counter.audioGameState);
@@ -45,12 +49,23 @@ export default  function Loading(props) {
     } 
   },[audioGameStatus,audioGameState])
 //  
+const [displayOn, setDisplayOn] = useState();
+React.useLayoutEffect(()=>{
+  if(props.userTrue !== null && props.userTrue !== undefined){
+    dispatch(userTrueСhange(props.userTrue));
+    setDisplayOn('none');
+  }
+},[props.userTrue])
 
-  if(!props.rezult){
+/*<Stack.Navigator  screenOptions={{headerShown: false}} >
+        <Stack.Screen  name="Authorization" component={Authorization} initialParams = {{props}}/>   
+        <Stack.Screen name="PasswordRecovery" component={PasswordRecovery} options={{headerShown: false,...TransitionPresets.FadeFromBottomAndroid}}/>
+      </Stack.Navigator>*/
+  if(props.rezult == null){
     return (
     <View style={styles.MainPageMain}>
       <Stack.Navigator  screenOptions={{headerShown: false}} >
-        <Stack.Screen  name="Authorization" component={Authorization} />   
+        <Stack.Screen  name="Authorization" component={Authorization} initialParams = {{'key':'props.displayStatus'}}/>   
         <Stack.Screen name="PasswordRecovery" component={PasswordRecovery} options={{headerShown: false,...TransitionPresets.FadeFromBottomAndroid}}/>
       </Stack.Navigator>
     </View> 
@@ -59,7 +74,8 @@ export default  function Loading(props) {
   else{
     return (
     <View style={styles.MainPageMain}>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      
+      <Stack.Navigator  screenOptions={{headerShown: false}}>
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="PasswordRecovery" component={PasswordRecovery} options={{headerShown: false}}/>
       </Stack.Navigator>
@@ -68,7 +84,7 @@ export default  function Loading(props) {
   }
  
   }
-
+ 
   const styles = StyleSheet.create({
     MainPageMain:{
       justifyContent: 'center',
@@ -77,6 +93,6 @@ export default  function Loading(props) {
       flexDirection: 'row',
       width: '100%',
       height: '100%',
-      backgroundColor: '#BC8F8F', 
+      
     }
   });

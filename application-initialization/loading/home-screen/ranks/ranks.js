@@ -1,21 +1,22 @@
 import * as React from 'react';
 import {useState,useEffect} from 'react';
 import { StyleSheet, View,Dimensions,ImageBackground, ActivityIndicator,Text,ScrollView,Image } from 'react-native';
-import { initializeApp } from 'firebase/app';
-import  {firebaseConfig}  from '../../../../firebaseConfig';
-import {getFirestore , collection, addDoc,getDocs ,doc, query, where, orderBy, updateDoc } from "firebase/firestore"; 
-import { getDatabase, ref, onValue} from "firebase/database";
-import {getAuth, onAuthStateChanged} from 'firebase/auth';
+//import { initializeApp } from 'firebase/app';
+//import  {firebaseConfig}  from '../../../../firebaseConfig';
+//import {getFirestore , collection, addDoc,getDocs ,doc, query, where, orderBy, updateDoc } from "firebase/firestore"; 
+//import { getDatabase, ref, onValue} from "firebase/database";
+//import {getAuth, onAuthStateChanged} from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-initializeApp(firebaseConfig);
+/*initializeApp(firebaseConfig);
 const dbF = getFirestore();
 const auth = getAuth();
 const db = getDatabase();
-const collectionUsers = collection(dbF, "users");
+const collectionUsers = collection(dbF, "users");*/
 
 export default  function Rang(props) {
 //назачльные значения 
-    const [rang, setRang] = useState();
+    const [rang, setRang] = useState('Новичок');
     const [username, setUsername] = useState();
     const [logickSort, setLogickSort] = useState();
     const [logickWord, setLogickWord] = useState();
@@ -33,7 +34,7 @@ useEffect(()=>{
 },[widthWind]);
 //    
 //получаем текущего пользователя для сравнения между базами
-    useEffect(()=>{
+    /*useEffect(()=>{
         onAuthStateChanged(auth, user => {
           if (user) {
             const uid = user.uid;
@@ -49,66 +50,71 @@ useEffect(()=>{
             console.log('error')
           }
         }); 
-    },[])
-//       
+    },[])*/
+//     
+
 // проводит цикл по всем пользователем сравнивает ник и выводит количество побед и других данных
 async function getDocUser(){
+  try {
+    const value = await AsyncStorage.getItem('@userValue');
+    let  userData = JSON.parse(value)
     
-        const querySnapshotoo = await getDocs(collectionUsers);
-  
+    //установка значений из базы данных
+    setLogickSort(userData.logickSortingPart);
+    setLogickWord(userData.logickWordPart);
+    setMemoryFigures(userData.memoryFiguresPart);
+    setMemoryBalls(userData.memoryBallsPart);
+    
+//сраниваем достижения и выводим титул        
+    switch (true) {
+        case userData.logickSortingPart < 10 && userData.logickWordPart < 10 && userData.memoryFiguresPart < 10 && userData.memoryBallsPart < 10:
+            setRang( 'Новичок' );
+          break;
+        case userData.logickSortingPart >= 10 && userData.logickWordPart >= 10 && userData.memoryFiguresPart >=  10 && userData.memoryBallsPart >= 10:
+            setRang( 'Упорный');
+          break;
+        case userData.logickSortingPart >= 30 && userData.logickWordPart >= 30 && userData.memoryFiguresPart >=  30 && userData.memoryBallsPart >= 30:
+            setRang( 'Вундеркинд' );
+          break;
+        case userData.logickSortingPart >= 50 && userData.logickWordPart >= 50 && userData.memoryFiguresPart >=  50 && userData.memoryBallsPart >= 50:
+            setRang( 'Гибкий ум' );
+          break;
+        case userData.logickSortingPart >= 100 && userData.logickWordPart >= 100 && userData.memoryFiguresPart >=  100 && userData.memoryBallsPart >= 100:
+            setRang( 'Эрудит' );
+          break;
+        case userData.logickSortingPart >= 150 && userData.logickWordPart >= 150 && userData.memoryFiguresPart >=  150 && userData.memoryBallsPart >= 150:
+            setRang( 'Менталист' );
+          break;
+        case userData.logickSortingPart >= 200 && userData.logickWordPart >= 200 && userData.memoryFiguresPart >=  200 && userData.memoryBallsPart >= 200:
+            setRang( 'Виртуоз' );
+          break;
+        case userData.logickSortingPart >= 300 && userData.logickWordPart >= 300 && userData.memoryFiguresPart >=  300 && userData.memoryBallsPart >= 300:
+            setRang( 'Создатель' );
+        break;  
+    }  
+  }
+  catch(e) {
+    console.log(e)
+  }   
+    /*const querySnapshotoo = await getDocs(collectionUsers);
     querySnapshotoo.forEach((doc) => {
       let  userData = doc.data()
-      
       if(userData.name === username ){
-
-//установка значений из базы данных
-        setLogickSort(userData.logickSortingPart);
-        setLogickWord(userData.logickWordPart);
-        setMemoryFigures(userData.memoryFiguresPart);
-        setMemoryBalls(userData.memoryBallsPart);
-        console.log(logickSort)
-//сраниваем достижения и выводим титул        
-        switch (true) {
-            case userData.logickSortingPart < 10 && userData.logickWordPart < 10 && userData.memoryFiguresPart < 10 && userData.memoryBallsPart < 10:
-                setRang( 'Новичок' );
-              break;
-            case userData.logickSortingPart >= 10 && userData.logickWordPart >= 10 && userData.memoryFiguresPart >=  10 && userData.memoryBallsPart >= 10:
-                setRang( 'Упорный');
-              break;
-            case userData.logickSortingPart >= 30 && userData.logickWordPart >= 30 && userData.memoryFiguresPart >=  30 && userData.memoryBallsPart >= 30:
-                setRang( 'Вундеркинд' );
-              break;
-            case userData.logickSortingPart >= 50 && userData.logickWordPart >= 50 && userData.memoryFiguresPart >=  50 && userData.memoryBallsPart >= 50:
-                setRang( 'Гибкий ум' );
-              break;
-            case userData.logickSortingPart >= 100 && userData.logickWordPart >= 100 && userData.memoryFiguresPart >=  100 && userData.memoryBallsPart >= 100:
-                setRang( 'Эрудит' );
-              break;
-            case userData.logickSortingPart >= 150 && userData.logickWordPart >= 150 && userData.memoryFiguresPart >=  150 && userData.memoryBallsPart >= 150:
-                setRang( 'Менталист' );
-              break;
-            case userData.logickSortingPart >= 200 && userData.logickWordPart >= 200 && userData.memoryFiguresPart >=  200 && userData.memoryBallsPart >= 200:
-                setRang( 'Виртуоз' );
-              break;
-            case userData.logickSortingPart >= 300 && userData.logickWordPart >= 300 && userData.memoryFiguresPart >=  300 && userData.memoryBallsPart >= 300:
-                setRang( 'Создатель' );
-            break;  
-        }  
      } 
-    });  
+    });  */
 }
 //
  //запуск функции и обновления состояния  
     useEffect(()=>{
         getDocUser();
-    },[username])
+    },[])
 
     return (
         <ImageBackground source={require('../../../../assets/img/rang.png')} resizeMode="cover" style={styles.containerImg}> 
             <View style={styles.container}>
                 <View style={styles.textBlockTitle}> 
                     <Text style={styles.textTitle}>Ваше звание : </Text>
-                    {username ? <Text style={styles.textRang}>{rang}</Text> : <ActivityIndicator  size="large" color="#00BFFF"/>}
+                    {rang ? <Text style={styles.textRang}>{rang}</Text> : <ActivityIndicator  size="large" color="#00BFFF"/>}
                 </View>
                 <View style={styles.textBlockStatistics}> 
                 <View style={styles.textBlockVictory}>
@@ -133,35 +139,35 @@ async function getDocUser(){
                     <Text style={[styles.text, {fontSize: fontSizeText,color: '#FFDEAD',backgroundColor: 'rgba(255, 255, 255,0.3)',padding: 5}]}>Чтобы получить звание, нужно завершить несколько этапов в играх. Один этап это 8 уровней пройденных подряд в одной игре.</Text>
                     
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Создатель.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Creator.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#FF0000'}]}>Создатель -  имеет 300 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Виртуоз.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Virtuoso.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#FFFF00'}]}>Виртуоз    -    имеет 200 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Менталист.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/mentalist.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#00FF00'}]}>Менталист - имеет 150 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Эрудит.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Scrabble.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#00FFFF'}]}>Эрудит    -     имеет 100 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/ГибкийУм.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/FlexibleMind.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#FFFFFF'}]}>Гибкий ум   -   имеет 50 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Вундеркинд.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/childProdigy.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#C0C0C0'}]}>Вундеркинг - имеет 30 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Упорный.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Persistent.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#DEB887'}]}>Упорный   -    имеет 10 и более завершенных этапов в каждой игре</Text>
                     </View>
                     <View style={styles.imgTextBlock}>
-                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Новичок.png')}/>
+                      <Image style={styles.imgStyle} source={require('../../../../assets/img/Newbie.png')}/>
                       <Text style={[styles.text, {fontSize: fontSizeText,color: '#000000'}]}>Новичок      -      имеет до 10-ти завершенных этапов в каждой игре</Text>
                     </View>
                     <Text style={[styles.text, {fontSize: fontSizeText,color: '#FFC0CB',backgroundColor: 'rgba(255, 255, 255,0.1)',marginTop: 5}]}>

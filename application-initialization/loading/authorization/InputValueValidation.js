@@ -153,6 +153,11 @@ function audioStatus(){
           blockOffsetVisibility();
           setLeftPosition('25%');
           break;
+        case  "Пользователь уже авторизован":
+          setTextError('Пользователь уже авторизован.');
+          blockOffsetVisibility();
+          setLeftPosition(200);
+          break;
       }
     },
        [props.target]

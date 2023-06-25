@@ -19,22 +19,15 @@ export default  function Timer(props) {
   const fadeAnim = useRef(new Animated.Value(-55)).current;
   
   useEffect(()=>{
+    
     if(isFocused === true){
       setSec(15);
-      dispatch(timeGameFalse());
-    }else{
-      Animated.timing(fadeAnim, {
-        toValue: -55,
-        duration: 1,
-        useNativeDriver: false
-      }).start()
     }
   },[isFocused])
 
 useEffect(()=>{
-  if(props.startTimer === "start"){
+  if(props.startTimer === "start" && sec !== 0){
 //действия таймера
-    if(sec === 0)return;
       setTimeout(()=>setSec(sec-1),1000);
 //анимация таймера      
       Animated.timing(fadeAnim, {
@@ -55,17 +48,17 @@ useEffect(()=>{
           break;
     }
   }
+  if(sec === 0){
+    dispatch(timeGameTrue())
+    setTimeout(()=>{dispatch(timeGameFalse());},1000);
+    Animated.timing(fadeAnim, {
+      toValue: -55,
+      duration: 1,
+      useNativeDriver: false
+    }).start()
+  }
 },[props.startTimer,sec])
 
- 
-useEffect(()=>{
- 
-  if(sec === 0){
-    setTimeout(()=>dispatch(timeGameTrue()),500);
-  }
-  
- },[sec])
- 
   const styles = StyleSheet.create({
     container:{
       height: 55,

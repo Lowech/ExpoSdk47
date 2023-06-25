@@ -5,7 +5,7 @@ import { StyleSheet, View, Dimensions,ImageBackground } from 'react-native';
 import SvgBalls from './svg/svgBalls';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus,intermediateResultMemoryPush } from '../../../../../../../../../redux/counterSlice';
+import { nameGameСhange,numberLevelChangePlus,numberLevelChangeMinus,intermediateResultMemoryPush,audioLevelСhange } from '../../../../../../../../../redux/counterSlice';
 
 import AlertTextMission from '../../../../alertFail/alertTextMission/alertTextMission';
 import TimerStart from '../../../../timerStart';
@@ -44,7 +44,8 @@ useEffect(()=>{
     playSound()
   }else{
     if(sound.current._loaded === true){
-      stopSound()
+      stopSound();
+      dispatch(audioLevelСhange(true));
     }
   } 
 },[audioLevelStatus])
@@ -78,7 +79,6 @@ const numberGame = useSelector(state => state.counter.numberGame);
   //  
  //наполнения массива значениями 
   useEffect(()=>{
-    console.log(numberLevel)
     if(isFocused === true){
 //выставления начальных значений массивов
   massNull=[];
@@ -142,7 +142,7 @@ const numberGame = useSelector(state => state.counter.numberGame);
   },[intermediateResultMemory])
 //
     return (
-      <ImageBackground source={require('../../../../../../../../../assets/img/balls.png')} resizeMode="cover" style={styles.containerImg}> 
+      <ImageBackground source={require('../../../../../../../../../assets/img/76542.jpg')} resizeMode="cover" style={styles.containerImg}> 
         <View style={styles.container}>
           <View  style={styles.MainPageMain}>
             {massColor}
@@ -160,7 +160,7 @@ const numberGame = useSelector(state => state.counter.numberGame);
       width: '100%',
       height: '100%',
       display: "flex",
-      backgroundColor: '#d058c4',
+      backgroundColor: '#1E90FF',
     },
     container: {    
       position: 'absolute',

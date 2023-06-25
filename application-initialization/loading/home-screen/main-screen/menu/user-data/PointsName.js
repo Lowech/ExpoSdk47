@@ -1,30 +1,53 @@
-import React from 'react';
-import { useState, } from 'react';
+import { useState,useLayoutEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import  {firebaseConfig}  from '../../../../../../firebaseConfig';
-    import { getDatabase, ref, onValue} from "firebase/database";
+import { getDatabase, ref, onValue} from "firebase/database";
 import {getFirestore , collection, addDoc,getDocs ,doc, query, where, orderBy, updateDoc } from "firebase/firestore"; 
 import { useEffect } from 'react';
 import {useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector,useDispatch } from 'react-redux';
 
-
-  initializeApp(firebaseConfig);
+  /*initializeApp(firebaseConfig);
   const auth = getAuth();
   const db = getDatabase();
   const dbF = getFirestore();
-  const collectionUsers = collection(dbF, "users");
+  const collectionUsers = collection(dbF, "users");*/
   
 export default function PointsName() {
-
+  //console.log("value" + '')
   const isFocused = useIsFocused();
   const [username, setUsername] = useState();
   const [timbon, setTimbon] = useState();
-  const [imgRang, setImgRang] = useState(require('../../../../../../assets/img/Новичок.png'));
+  const [timbonUp, setTimbonUp] = useState();
+  const [imgRang, setImgRang] = useState(require('../../../../../../assets/img/Newbie.png'));
+  //Данные пользователя получены
+  const userTrue = useSelector(state => state.counter.userTrue); 
   
+  const getMyStringValue = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@timbon');
+      if(value !== null){
+        setTimbon(Number(JSON.parse(value).timbon));
+        setUsername(String(JSON.parse(value).username));
+      }
+      
+    } catch(e) {
+      console.log(e)
+    } 
+  }
+  const getTimbonUp = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@timbonUp');
+      setTimbonUp(value); 
+    } catch(e) {
+      console.log(e)
+    } 
+  }
 //проверка авторизации и выставления имени и количества тимбонов
- useEffect(()=>{
+ /*useEffect(()=>{
   onAuthStateChanged(auth, user => {
     if (user) {
       const uid = user.uid;
@@ -32,52 +55,60 @@ export default function PointsName() {
 
      onValue(starCountRef, (snapshot) => {
       let data = Object(snapshot.val());
-
-    setUsername(data.username);
-    setTimbon(data.timbon);
-
+    //setTimbon(data.timbon);
    });  
-
     } else {
       console.log('error')
     }
-  }); 
- },[])
+  });  
+ },[])*/
  //проверка ранга и установка соответствующего иконки
- useEffect(()=>{
- async function getDocUser(){
-  const querySnapshotoo = await getDocs(collectionUsers);
+useLayoutEffect(()=>{
  
+  getTimbonUp();
+  getMyStringValue();
+  async function getDocUser(){
+  try {
+  const value = await AsyncStorage.getItem('@userValue');
+  let  userData = JSON.parse(value);
+
+ if(userData !== null){
+  switch (true) {
+    case userData.logickWordPart >= 10 && userData.logickSortingPart >= 10 && userData.memoryBallsPart >= 10 && userData.memoryFiguresPart >= 10:
+      setImgRang(require('../../../../../../assets/img/Persistent.png'));
+    break;
+    case userData.logickWordPart >= 30 && userData.logickSortingPart >= 30 && userData.memoryBallsPart >= 30 && userData.memoryFiguresPart >= 30:
+       setImgRang(require('../../../../../../assets/img/childProdigy.png'));
+    break;
+    case userData.logickWordPart >= 50 && userData.logickSortingPart >= 50 && userData.memoryBallsPart >= 50 && userData.memoryFiguresPart >= 50:
+      setImgRang(require('../../../../../../assets/img/FlexibleMind.png'));
+    break;
+    case userData.logickWordPart >= 100 && userData.logickSortingPart >= 100 && userData.memoryBallsPart >= 100 && userData.memoryFiguresPart >= 100:
+       setImgRang(require('../../../../../../assets/img/Scrabble.png'));
+    break;
+    case userData.logickWordPart >= 150 && userData.logickSortingPart >= 150 && userData.memoryBallsPart >= 150 && userData.memoryFiguresPart >= 150:
+      setImgRang(require('../../../../../../assets/img/mentalist.png'));
+    break;
+    case userData.logickWordPart >= 200 && userData.logickSortingPart >= 200 && userData.memoryBallsPart >= 200 && userData.memoryFiguresPart >= 200:
+       setImgRang(require('../../../../../../assets/img/Virtuoso.png'));
+    break;
+    case userData.logickWordPart >= 300 && userData.logickSortingPart >= 300 && userData.memoryBallsPart >= 300 && userData.memoryFiguresPart >= 300:
+      setImgRang(require('../../../../../../assets/img/Creator.png'));
+    break;
+  }
+}
+}
+catch(e) {
+  console.log(e)
+} 
+  /*const querySnapshotoo = await getDocs(collectionUsers);
    querySnapshotoo.forEach((doc) => {
-     let  userData = doc.data()
-     
-     switch (userData.logickWordPart && userData.logickSortingPart && userData.memoryBallsPart && userData.memoryFiguresPart) {
-       case 10:
-         setImgRang(require('../../../../../../assets/img/Упорный.png'));
-       break;
-       case 30:
-          setImgRang(require('../../../../../../assets/img/Вундеркинд.png'));
-       break;
-       case 50:
-         setImgRang(require('../../../../../../assets/img/ГибкийУм.png'));
-       break;
-       case 100:
-          setImgRang(require('../../../../../../assets/img/Эрудит.png'));
-       break;
-       case 150:
-         setImgRang(require('../../../../../../assets/img/Менталист.png'));
-       break;
-       case 200:
-          setImgRang(require('../../../../../../assets/img/Виртуоз.png'));
-       break;
-       case 300:
-         setImgRang(require('../../../../../../assets/img/Создатель.png'));
-       break;
-     }
-   }); 
+     let  userData = doc.data()  
+   }); */
  }
  getDocUser();
-},[isFocused])
+
+},[isFocused,userTrue])
 
 const styles = StyleSheet.create({
 LoginRegister:{
@@ -149,9 +180,10 @@ timbon:{
          
   return (
     <View style={styles.LoginRegister}>
+      
       <Text style={styles.username}>{username}</Text>
         <Image style={styles.icons} source={imgRang}/>
-          <Text style={styles.timbon}>{timbon}t</Text>
+          <Text style={styles.timbon}>{timbonUp === null ? timbon : timbonUp }t</Text>
     </View>
   );
 }    

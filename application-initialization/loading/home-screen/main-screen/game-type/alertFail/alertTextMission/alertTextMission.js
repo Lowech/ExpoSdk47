@@ -107,7 +107,7 @@ const cloceAlertMessageClick = () => {Animated.timing( alertHidden,{
              <OpenSvg /> 
     
             </Pressable>
-            <ImageBackground source={require('../../../../../../../assets/img/textAlert.png')} resizeMode="cover" style={styles.containerText}>
+            <ImageBackground source={require('../../../../../../../assets/img/AlertTextMission.jpg')} resizeMode="cover" style={styles.containerText}>
 
               <Pressable
                 onPress={cloceAlertMessageClick}
@@ -147,18 +147,18 @@ const cloceAlertMessageClick = () => {Animated.timing( alertHidden,{
       width: '100%',
       height: '100%',
       backgroundColor: '#5ea2b0',
-      borderTopWidth: 2,
-      borderTopColor: "rgba(160, 82, 45,1)",
+      borderTopWidth: 3,
+      borderTopColor: "#00FFFF",
     },
     blockText: {  
       paddingTop: 10,  
       fontSize: 28,
       fontWeight: "bold",
-      color: '#A0522D',
+      color: 'white',
       textAlign: "center",
-      textShadowColor: 'rgba(0, 0, 0,0.5)',
+      textShadowColor: 'rgba(0, 0, 0,0.7)',
       textShadowRadius: 3,
-      textShadowOffset:  { width: 1, height: 1 },
+      textShadowOffset:  { width: 2, height: 2 },
       width: "90%",
       height: "66%",
      
@@ -169,12 +169,12 @@ const cloceAlertMessageClick = () => {Animated.timing( alertHidden,{
       backgroundColor: '#5ea2b0', 
       borderTopRightRadius: 50,
       borderTopLeftRadius: 50,
-      borderLeftWidth: 1,
-      borderLeftColor: "rgba(255, 255, 255,0.5)",
-      borderTopWidth: 1,
-      borderTopColor: "rgba(255, 255, 255,0.5)",
-      borderRightWidth: 1,
-      borderRightColor: "rgba(255, 255, 255,0.5)",
+      borderLeftWidth: 1.5,
+      borderLeftColor: "#00FFFF",
+      borderTopWidth: 1.5,
+      borderTopColor: "#00FFFF",
+      borderRightWidth: 1.5,
+      borderRightColor: "#00FFFF",
       
     },
     cloceContainer:{
@@ -183,11 +183,11 @@ const cloceAlertMessageClick = () => {Animated.timing( alertHidden,{
       backgroundColor: '#8eafb7', 
       borderBottomRightRadius: 50,
       borderBottomLeftRadius: 50,
-      borderLeftWidth: 1,
-      borderLeftColor: "rgba(255, 255, 255,0.5)",
-      borderRightWidth: 1,
-      borderRightColor: "rgba(255, 255, 255,0.5)",
-      borderBottomWidth: 1,
-      borderBottomColor: "rgba(255, 255, 255,0.5)",
+      borderLeftWidth: 1.5,
+      borderLeftColor: "#00FFFF",
+      borderRightWidth: 1.5,
+      borderRightColor: "#00FFFF",
+      borderBottomWidth: 1.5,
+      borderBottomColor: "#00FFFF",
     }
   });

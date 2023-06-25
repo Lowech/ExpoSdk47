@@ -48,13 +48,13 @@ function closeMessage(){
       alignItems: 'center',
       width: '100%',
       height: '100%',
-      backgroundColor: '#800080', 
+      backgroundColor: '#AFEEEE', 
     },
     scrollViewContainer:{
       borderBottomRightRadius: 0,
       borderTopRightRadius: 0,
       borderRadius: 10,
-      backgroundColor: 'rgba(0, 0, 255, 0.2)', 
+      backgroundColor: 'rgba(175, 238, 238, 0.5)', 
       marginTop: '5%',
       marginBottom: '3%',
       borderLeftWidth: 1,
@@ -158,7 +158,7 @@ function closeMessage(){
     });
   
     return (
-       <ImageBackground source={require('../../../../assets/img/Correspondence.png')} resizeMode="cover" style={styles.settingСontainer}>
+       <ImageBackground source={require('../../../../assets/img/ma.jpg')} resizeMode="cover" style={styles.settingСontainer}>
          <ScrollView persistentScrollbar={true} style={styles.scrollViewContainer}>
         <Pressable  style={styles.containerText} onPress={()=>openMessage()}>
             <Text style={styles.titleText}>У вас нет писем</Text>

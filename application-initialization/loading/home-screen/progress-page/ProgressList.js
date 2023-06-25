@@ -8,6 +8,7 @@ import {getFirestore , collection, addDoc,getDocs ,doc, query, where, orderBy, u
 import {getAuth,onAuthStateChanged} from 'firebase/auth';
 import  ProgressSVGUp  from './progressSVGUp';
 import  ProgressSVGDown  from './progressSVGDown';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 initializeApp(firebaseConfig);
 const dbF = getFirestore();
@@ -20,14 +21,27 @@ export default  function ProgressList(props) {
   
   const [massRender, setMassRender] = useState('');
   const [isLodingTrue, setIsLodingTrue] = useState(false);
+  const [massUsers, setMassUsers] = useState(null);
 // значение смещения прокрутки
   const flatListRef = useRef(null);
 //ник пользователя и его номер в списке
   const [nik, setNik] = useState();
   const [nikIndex, setNikIndex] = useState();
   const backgroundColor = isLodingTrue === massRender ? "#6e3b6e" : "#20B2AA";
- 
+  async function getDocUsers(){
+    try {
+      const value = await AsyncStorage.getItem('@usersValues');
+      setMassUsers(JSON.parse(value));
+    }
+    catch(e) {
+      console.log(e)
+    } 
+  }
   useEffect(()=>{
+    getDocUsers()
+  },[])
+  useEffect(()=>{
+    
   //получения ника пользователя
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -49,10 +63,10 @@ export default  function ProgressList(props) {
 
 //получения списка пользователей и их значения
     async function getDocUser(){
-
+      
       setIsLodingTrue(false) 
 
-      let massElemBd=[];
+      /*let massElemBd=[]; заменен на massUsers
 
       const querySnapshotoo = await getDocs(collectionUsers);
   
@@ -66,63 +80,63 @@ export default  function ProgressList(props) {
         "remembering": userData.remembering,
         "smartest": userData.smartest
       });
-    });  
+    });  */
+    if(massUsers !== null){
 
+   
     const DATA =[];
     const conclusion =  []; 
-    
-
-      for(let it=0; it <= massElemBd.length-1; it++){
+      for(let it=0; it <= massUsers.length-1; it++){
 
 
         switch (props.value) {
           case 'победоносцы':
 
-            massElemBd.sort((a,b)=> {
+          massUsers.sort((a,b)=> {
               return  b.victory - a.victory;
             })
 
             DATA.push({
               id: Math.random().toString(12).substring(0),
-              title: `${it+1} ${massElemBd[it].name} `,
-              title1: massElemBd[it].victory ,
+              title: `${it+1} ${massUsers[it].name} `,
+              title1: massUsers[it].victory ,
             });
             
             break;
           case "неиссякаемый энтузиазм":
 
-            massElemBd.sort((a,b)=> {
+          massUsers.sort((a,b)=> {
               return b.numberGames - a.numberGames;
             })
 
             DATA.push({
               id: Math.random().toString(12).substring(0),
-              title: `${it+1} ${massElemBd[it].name} `,
-              title1: massElemBd[it].numberGames ,
+              title: `${it+1} ${massUsers[it].name} `,
+              title1: massUsers[it].numberGames ,
             });
             break;
           case "феноменальная память":
 
-            massElemBd.sort((a,b)=> {
+          massUsers.sort((a,b)=> {
               return b.remembering - a.remembering;
             })
 
             DATA.push({
               id: Math.random().toString(12).substring(0),
-              title: `${it+1} ${massElemBd[it].name} `,
-              title1: massElemBd[it].remembering ,
+              title: `${it+1} ${massUsers[it].name} `,
+              title1: massUsers[it].remembering ,
             });
             break;
           case "исключительная сообразительность":
 
-            massElemBd.sort((a,b)=> {
+          massUsers.sort((a,b)=> {
               return b.smartest - a.smartest;
             })
 
             DATA.push({
               id: Math.random().toString(12).substring(0),
-              title: `${it+1} ${massElemBd[it].name} `,
-              title1: massElemBd[it].smartest ,
+              title: `${it+1} ${massUsers[it].name} `,
+              title1: massUsers[it].smartest ,
             });
             break;  
         }  
@@ -144,11 +158,11 @@ export default  function ProgressList(props) {
 
   setMassRender(DATA)  
   setIsLodingTrue(true) 
-  
+}
 } 
   getDocUser();
   
-},[props.value])
+},[props.value,massUsers])
 
 
 /////// элементы отображения текста

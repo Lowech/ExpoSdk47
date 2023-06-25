@@ -6,7 +6,7 @@ import audioClick from '../../../../../../../audio-components/audioClick.js';
 import { useSelector,useDispatch } from 'react-redux';
 import {audioGameStateСhange,audioClickСhange,audioLevelСhange} from '../../../../../../../redux/counterSlice';
 
-export default  function LevelSelection({navigation}) {
+export default  function LevelSelectionMemory({navigation}) {
 
 //проверка статуса звука
 const audioClickStatus = useSelector(state => state.counter.audioClick);
@@ -17,7 +17,7 @@ function audioStatus(){
   
 }
   const dispatch = useDispatch();
-
+  
 function GoGameBalls(){
   dispatch(audioGameStateСhange(false));
   audioStatus();

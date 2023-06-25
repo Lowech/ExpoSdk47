@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useState,useEffect} from 'react';
 import {useIsFocused } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { nameGameСhange,intermediateResultMemoryPush } from '../../../../../../../../../redux/counterSlice';
+import { nameGameСhange,intermediateResultMemoryPush,audioLevelСhange } from '../../../../../../../../../redux/counterSlice';
 import { StyleSheet, View,ImageBackground,Dimensions } from 'react-native';
 import SvgFiguresCircle from './svg/SvgFiguresCircle';
 import SvgFiguresStar from './svg/SvgFiguresStar';
@@ -50,7 +50,8 @@ useEffect(()=>{
     playSound()
   }else{
     if(sound.current._loaded === true){
-      stopSound()
+      stopSound();
+      dispatch(audioLevelСhange(true));
     }
   } 
 },[audioLevelStatus])
@@ -149,7 +150,7 @@ useEffect(()=>{
 },[intermediateResultMemory])
 //  
     return (
-      <ImageBackground source={require('../../../../../../../../../assets/img/figuresFon.png')} resizeMode="cover" style={styles.containerImg}> 
+      <ImageBackground source={require('../../../../../../../../../assets/img/mmm.jpg')} resizeMode="cover" style={styles.containerImg}> 
         <View style={styles.container}>
           <View  style={styles.MainPageMain}>
             {massColor}
