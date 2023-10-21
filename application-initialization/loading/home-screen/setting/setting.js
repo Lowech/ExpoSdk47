@@ -6,11 +6,13 @@ import { TextInput } from 'react-native-gesture-handler';
 import { initializeApp } from 'firebase/app';
 import {getAuth, updateEmail, deleteUser ,signInWithEmailAndPassword,updatePassword } from 'firebase/auth';
 import {getFirestore , collection, doc, updateDoc,getDocs , query,orderBy,deleteDoc  } from "firebase/firestore"; 
-import { getDatabase, ref,remove,update } from "firebase/database";
+import { getDatabase, ref,remove,update,get,child,goOffline,goOnline } from "firebase/database";
 import  {firebaseConfig}  from '../../../../firebaseConfig';
 
 import { useSelector,useDispatch } from 'react-redux';
 import {audioGameСhange,audioClickСhange,audioLevelСhange} from '../../../../redux/counterSlice';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import  InputValueValidation  from "../../authorization/InputValueValidation";
 
@@ -65,6 +67,51 @@ export default function Setting() {
   const [deleteUserEmail, setDeleteUserEmail] = useState("");
   const [deleteUserBorderErrorPassword, setDeleteUserBorderErrorPassword] = useState({borderBottomColor: 'rgb(128, 128, 128)'});
   const [deleteUserborderErrorEmail, setDeleteUserBorderErrorEmail] = useState({borderBottomColor: 'rgb(128, 128, 128)'});
+//дата смены логина
+const date = new Date();
+date.setMonth(date.getMonth()+4);
+const dateDay =  date.getDate().toString().length < 2 ? "0" + date.getDate().toString() : date.getDate().toString();
+const dateMonth =  date.getMonth().toString().length < 2 ? "0" + date.getMonth().toString() : date.getMonth().toString();
+const stringDate = dateDay+"."+dateMonth.toString()+"."+date.getFullYear().toString();
+const [dataChangeLogin, setDataChangeLogin] = useState(null);
+const [dataChangeLoginOpacity, setDataChangeLoginOpacity] = useState(0);
+const [changeLoginOpacityImput, setChangeLoginOpacityImput] = useState(true);
+
+const setDateValue = async (item) => {
+  try {
+    //console.log(us)
+    await AsyncStorage.setItem('@dateValue', item)
+  } catch(e) {
+    console.log(e)
+  }
+}  
+const getDateValue = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@dateValue');
+    setDataChangeLogin(value)
+  } catch(e) {
+    console.log(e)
+  }  
+}
+
+useEffect(()=>{
+  getDateValue();
+ 
+  console.log(dataChangeLogin)
+  if(dataChangeLogin != null){
+    if( (Number(stringDate.split('.').join('')) >= Number(dataChangeLogin.split('.').join('')) && Number(dataChangeLogin.split('.').join('')) != 0) ){
+      setDataChangeLoginOpacity(1);
+      setChangeLoginOpacityImput(false);
+      
+    }else{
+      setChangeLoginOpacityImput(true);
+    }
+  }else{
+    setChangeLoginOpacityImput(true);
+  }
+  
+},[dataChangeLogin])
+//
 //проверка отлючения включения звука
 useEffect(()=>{
   if(audioClick === false ){
@@ -106,17 +153,27 @@ async function nameVerification(nickName){
   }
 // замена логина  
 async function upDateLogin(){
-    if(varificationTrueLogin === true){
-      setInputId("ник обновлен удачно");
+
+    if(varificationTrueLogin === true && changeLoginOpacityImput == true){
+      goOnline(db);
+      setInputId("Установлен новый Ник");
       onChangeLogin("");
       setBorderErrorLogin({borderBottomColor: 'rgb(128, 128, 128)'});
 
-      const starCountRef = ref(db, `users/${auth.currentUser.uid}`);
-      update(starCountRef, {username: login});
-
+      update(ref(db, `users/${auth.currentUser.uid}`), {username: login});
+      //const starCountRef = ref(db, `users/${auth.currentUser.uid}`);
+      //update(starCountRef, {username: login});
+      //установка даты смены логина
+      setDateValue(stringDate.toString());
+      setChangeLoginOpacityImput(false);
+      setDataChangeLoginOpacity(1);
+      getDateValue();
+      //
+      setTimeout(()=>{goOffline(db);},5000)
       await  updateDoc(docUsers, {
         name: login,  
       }); 
+       
     }
   }
 //  
@@ -287,7 +344,6 @@ async function deleteUsers(){
       marginLeft: 20,
       marginRight: 15,
       paddingBottom: 20,
-      marginTop: 10,
       width: 500,
       height: 60,
 
@@ -313,6 +369,25 @@ async function deleteUsers(){
       borderBottomWidth: 1,
       borderBottomColor: "rgba(0, 0, 0,0.5)", 
             
+    },
+    imputLoginContinerChange:{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: 500,
+      height: 20,
+      
+    },
+    imputLoginTextChange:{
+      marginLeft: 20,
+      fontSize: 15,
+      color: "red",
+      width: "auto",
+      height: "100%",
+      textShadowRadius: 2,
+      textShadowColor: '#696969',
+      textShadowOffset: { width: 1, height: 1 },
+      backgroundColor: "rgba(255, 255, 255,0.1)",
     },
     containerButtonInputEmail:{
       display: 'flex',
@@ -343,7 +418,7 @@ async function deleteUsers(){
       height: 100,
     },
     input:{
-      color: 'white',
+      color: 'black',
       width: 220,
       height: 40,
       fontSize: 18,
@@ -388,6 +463,11 @@ async function deleteUsers(){
         value={audioGame}
       />
         </View>
+        <View style={[styles.imputLoginContinerChange,{opacity: dataChangeLoginOpacity}]}>
+          <Text style={styles.imputLoginTextChange}>
+            Изменить логин можно начиная с {dataChangeLogin}
+          </Text>
+        </View>
         <View style={styles.containerButtonInput}>
         <Pressable 
         onPress={() => upDateLogin()}
@@ -408,7 +488,8 @@ async function deleteUsers(){
         maxLength={12}
         textAlign='center'
         autoCorrect={false}
-        disableFullscreenUI={false}/>
+        disableFullscreenUI={false}
+        editable = {changeLoginOpacityImput}/>
         </View>
         <View style={styles.containerButtonInputEmail}>
         <Pressable 

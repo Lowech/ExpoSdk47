@@ -84,7 +84,7 @@ useEffect(()=>{
       {
         return 3
       }
-      else if(numberLevel+1 === 9 || numberLevel+1 === 10)
+      else if(numberLevel+1 === 9 || numberLevel+1 === 10 || numberLevel+1 === 11)
       {
         return 4
       }
@@ -103,7 +103,6 @@ useEffect(()=>{
   } 
 //  
 },[isFocused])  
-
 
     return (
       <ImageBackground source={require('../../../../../../../../../assets/img/789.jpg')} resizeMode="cover" style={styles.containerImg}> 

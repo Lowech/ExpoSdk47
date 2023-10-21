@@ -65,35 +65,35 @@ function audioStatus(){
 //анимация    
     const interpolateHiddenRed =  animateNumberRed.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
     const interpolateHiddenBlue =  animateNumberBlue.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
     const interpolateHiddenYellow =  animateNumberYellow.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
     const interpolateHiddenGreen =  animateNumberGreen.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
     const interpolateHiddenGrey =  animateNumberGrey.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
     const interpolateHiddenBlack =  animateNumberBlack.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['61%', '0%']
     });
     const interpolateHiddenWhite =  animateNumberWhite.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
     const interpolateHiddenBrown =  animateNumberBrown.interpolate({
       inputRange: [0, 100],
-      outputRange: ['60%', '0%']
+      outputRange: ['58%', '0%']
     });
 //функции на нажатия пользователя    
 const VisibleNumberPlusRed = () => {
@@ -616,13 +616,13 @@ clickElementFiguresMass= [];
     elemItemSumm:{
         width: 40,
         height: 65, 
-        color: '#7B68EE',
+        color: '#00FF00',
         textAlign: "center",
         textAlignVertical: "top",
         fontWeight: "700",
         fontSize: 40,
         textShadowRadius: 1,
-        textShadowColor: 'white',
+        textShadowColor: 'black',
         textShadowOffset: { width: 0.5, height: 0.5 },
         
       }

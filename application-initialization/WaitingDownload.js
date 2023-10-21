@@ -15,8 +15,10 @@ export default function WaitingDownload(props){
 
 useEffect(()=>{
   const unsubscribe = NetInfo.addEventListener(state => {
+    
     if(state.isConnected !== true){
-      setNet("flex")
+      setNet("flex");
+      console.log(state)
     }
   },[unsubscribe]);
 })
@@ -37,7 +39,7 @@ useEffect(()=>{
 
   const styles = StyleSheet.create({
     waitingDownload:{
-      display: props.displayStatus,
+      display: net,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',

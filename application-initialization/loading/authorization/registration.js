@@ -209,6 +209,13 @@ const removeValueUpdate = async () => {
     console.log(e)
   }
 }
+const removeDateValue = async () => {
+  try {
+    await AsyncStorage.removeItem('@dateValue')
+  } catch(e) {
+    console.log(e)
+  }
+}  
 //добавления данных при регистрации если уже вход произведен
 const setStringValue = async (t) => {
   try {
@@ -235,6 +242,7 @@ const setStringValue = async (t) => {
       audioStatus();
       removeValueUp();
       removeValueUpdate();
+      removeDateValue();
       
       if(email !== "" && password !== "" && login !== "" && birth !== ""){
         

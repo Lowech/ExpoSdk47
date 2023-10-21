@@ -98,10 +98,10 @@ async function usersFinishRaundMinus(n,v,r,s,lw,ls,mf,mb)  {
         victory: JSON.parse(value).victory - v,
         remembering: JSON.parse(value).remembering - r,
         smartest: JSON.parse(value).smartest - s,
-        logickWordPart:  lw,
-        logickSortingPart: ls, 
-        memoryFiguresPart: mf,
-        memoryBallsPart: mb,   
+        logickWordPart:  JSON.parse(value).logickWordPart + lw,
+        logickSortingPart: JSON.parse(value).logickSortingPart + ls, 
+        memoryFiguresPart: JSON.parse(value).memoryFiguresPart + mf,
+        memoryBallsPart: JSON.parse(value).memoryBallsPart + mb,   
         name: JSON.parse(value).name,
         rangTrue: JSON.parse(value).rangTrue,
       }
@@ -115,10 +115,10 @@ async function usersFinishRaundMinus(n,v,r,s,lw,ls,mf,mb)  {
         smartest: JSON.parse(userValueUp).smartest - s,
         name: JSON.parse(value).name,
         rangTrue: JSON.parse(value).rangTrue,
-        logickWordPart:  lw,
-        logickSortingPart: ls, 
-        memoryFiguresPart: mf,
-        memoryBallsPart: mb, 
+        logickWordPart: JSON.parse(userValueUp).logickWordPart + lw,
+        logickSortingPart: JSON.parse(userValueUp).logickSortingPart + ls, 
+        memoryFiguresPart: JSON.parse(userValueUp).memoryFiguresPart + mf,
+        memoryBallsPart: JSON.parse(userValueUp).memoryBallsPart + mb, 
       }
       //console.log(v)
       //console.log(userValueUp)

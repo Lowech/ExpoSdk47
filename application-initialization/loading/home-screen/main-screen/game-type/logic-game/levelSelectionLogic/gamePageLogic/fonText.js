@@ -5,12 +5,8 @@ function FonText() {
   return (
   <Svg
     x={0}
-    y={0}
-    >
-
-
-<Line  x1="0" y1="30" x2="150" y2="10" fill="rgb(250, 235, 215)" stroke="rgb(250, 235, 215)" strokeWidth="5" />
-  
+    y={0}>
+      <Line  x1="-2" y1="24" x2="320" y2="10" fill="rgba(0, 0, 0,0.5)" stroke="rgba(0, 0, 0,0.5)" strokeWidth="30" />
   </Svg>
   )
 }

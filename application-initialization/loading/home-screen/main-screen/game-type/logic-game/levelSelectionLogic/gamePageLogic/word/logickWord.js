@@ -55,8 +55,6 @@ function audioStatus(){
       borderRightWidth: 2,
       borderLeftColor: "transparent",
       margin: 5,
-      PaddingTop: 10,
-      padding: 5,
       backgroundColor: 'transparent',
     },
     textBlockClick:{
@@ -78,6 +76,7 @@ function audioStatus(){
       textShadowColor: 'black',
       textShadowRadius: 5,
       textShadowOffset:  { width: 1, height: 1 },
+      padding:5,
       
     },
     textGradient:{
@@ -93,7 +92,7 @@ function audioStatus(){
     }
   })
 
-const massElementColor= ["red","blue","#00FFFF","green","grey","black","white","brown","#FF00FF","#00FF00"];
+const massElementColor= ["red","blue","#00FFFF","green","grey","#D2691E","white","brown","#FF00FF","#00FF00"];
 let rezultMass = [];
 //начальный массив значений результата уровня
 const [selectionResult, setSelectionResult] = useState([]);

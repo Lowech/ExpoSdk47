@@ -24,6 +24,8 @@ function audioStatus(){
 } 
 const isFocused = useIsFocused();
 const dispatch = useDispatch();
+//после победного последнего раунда появляеться сообщение
+const [mesResFinal, setMesResFinal] = useState('none');
 //получения резульатов вычасления пройденного уровня
   const rezultGame = useSelector(state => state.counter.stateRezultat);
 //промежуточные очки во время уровня
@@ -53,13 +55,15 @@ const numberLevel = useSelector(state => state.counter.numberLevel);
         setTextColorRezult("#FF0000");
       }
 //скрытие кнопки следующий уровень
-      if(rezultGame === 'true' && numberLevel != 10){
+      if(rezultGame === 'true'  && numberLevel != 10){
         
         setHiddenVisible('flex'); 
       }
       else{
-        
         setHiddenVisible("none");
+      }
+      if(numberLevel === 10){
+        setMesResFinal('flex')
       }
  //анимация количества очков
  Animated.timing( fadeAnim,{
@@ -273,11 +277,31 @@ const numberLevel = useSelector(state => state.counter.numberLevel);
       bottom: 0,
       width: "100%",
       height: "100%",
-      borderRadius: 10,
+    },
+    textFinal:{
+      display: mesResFinal,
+      position: 'absolute',
+      //zIndex: -1,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      width: "100%",
+      height: "100%",
+    },
+    MessageResultatFinal:{
+      textAlign: "center",
+      fontSize: 40,
+      fontWeight: 'bold',
+      color: '#00FFFF',
+      textShadowRadius: 2,
+      textShadowColor: '#696969',
+      textShadowOffset: { width: 3, height: 3 },
+      width: "auto",
+      height: 60,
       
     }
   });
-    
+    console.log(fadeAnim);
 useEffect(()=>{
     switch (numberLevel) {
       case 3:
@@ -365,7 +389,13 @@ useEffect(()=>{
     return ( 
       <ImageBackground source={require('../../../../../../assets/img/alertRezult.jpg')} resizeMode="cover" style={styles.menuButtonСontainer}>
         {levelNextMass}
+        <View style={styles.textFinal}>
+        <Text style={styles.MessageResultatFinal}>Поздравляем с заввершением этапа!
+          
+          </Text>
+        </View>
         <View  style={[styles.containMessageResultat]}>
+          
         <View style={styles.textGradient}>
               <FonText />
           </View>
@@ -375,9 +405,11 @@ useEffect(()=>{
           
           
         </View>
+        
         <Animated.View style={[styles.totalRezultView,{right: fadeAnim}]}>
           <Text style={styles.totalRezult}>{intermediateResult}</Text>
         </Animated.View>
+        
           <View style={styles.containerOption}>
             <View style={styles.containerOptionItem}>
             

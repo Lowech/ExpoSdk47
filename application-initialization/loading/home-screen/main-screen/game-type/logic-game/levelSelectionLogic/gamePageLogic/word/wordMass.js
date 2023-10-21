@@ -488,6 +488,8 @@ const [sortRandomElem, setSortRandomElem] = useState();
   }
   },[isFocused,props.colElemFalse])
 //
+console.log(fullMassElem)
+console.log(massElemFalse)
 return (
     <LogickWord massRandomElemTrue={fullMassElem} massRandomElemFalse={massElemFalse} sortRandomElem={sortRandomElem} colBlock={props.colBlock} navigation={props.navigation}/>
   );

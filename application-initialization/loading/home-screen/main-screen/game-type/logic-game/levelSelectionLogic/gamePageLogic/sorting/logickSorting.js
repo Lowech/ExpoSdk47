@@ -6,7 +6,6 @@ import audioClick from '../../../../../../../../../audio-components/audioClick.j
 import { useSelector, useDispatch } from 'react-redux';
 import { timeGameFalse, incrementByAmount } from '../../../../../../../../../redux/counterSlice';
 import Scoring from '../../../../scoring';
-import FonText from '../fonText.js';
 
 //массив выбранных элементов пользователем
 let clickElem = [];
@@ -124,7 +123,6 @@ for(; step < props.colBlock; step++){
         rezultMass.splice(props.sortRandomElem[0],1,
             <Pressable  key={props.sortMass[0]+massElementColor[0]} style={[styles.textBlock]} onPressIn ={(e)=>ClickElemMassZero(props.sortMass[0],e)}>
                 <View style={styles.textGradient}>
-              <FonText />
             </View>
                 <Animated.Text key={props.sortMass[0]+massElementColor[0]} style={[styles.text,{color:massElementColor[0],fontSize: themeBackSizeZero}]} >{props.sortMass[0]}</Animated.Text>
             </Pressable>)
@@ -2898,6 +2896,22 @@ useEffect(()=>{
             easing: Easing.elastic(3),
             useNativeDriver: false
           }).start()
+        break;
+        case JSON.stringify(themeBackSizeNine):
+          Animated.timing(themeBackSizeNine, {
+            toValue: 23,
+            duration: 500,
+            easing: Easing.elastic(3),
+            useNativeDriver: false
+          }).start()
+        break; 
+        case JSON.stringify(themeBackSizeEight):
+          Animated.timing(themeBackSizeEight, {
+            toValue: 23,
+            duration: 500,
+            easing: Easing.elastic(3),
+            useNativeDriver: false
+          }).start() 
         break;     
     }
     }
@@ -2970,6 +2984,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
     }
@@ -3043,6 +3073,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
     }
@@ -3117,6 +3163,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
   }  
@@ -3190,6 +3252,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
   }  
@@ -3263,6 +3341,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
   }
@@ -3336,6 +3430,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
   }
@@ -3409,6 +3519,22 @@ useEffect(()=>{
               easing: Easing.elastic(3),
               useNativeDriver: false
             }).start()
+          break;
+          case JSON.stringify(themeBackSizeNine):
+            Animated.timing(themeBackSizeNine, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start()
+          break; 
+          case JSON.stringify(themeBackSizeEight):
+            Animated.timing(themeBackSizeEight, {
+              toValue: 23,
+              duration: 500,
+              easing: Easing.elastic(3),
+              useNativeDriver: false
+            }).start() 
           break;         
     }
   }

@@ -16,6 +16,7 @@ import {Audio} from 'expo-av';
 const Stack = createStackNavigator();
 
 export default  function Loading(props) {
+  const [connectOne, setConnectOne] = useState();
   const dispatch = useDispatch();
 //console.log(props.rezult+"???????????")
 //музыка
@@ -51,17 +52,27 @@ export default  function Loading(props) {
 //  
 const [displayOn, setDisplayOn] = useState();
 React.useLayoutEffect(()=>{
-  if(props.userTrue !== null && props.userTrue !== undefined){
+  setTimeout(()=>{
+    if(props.userTrue == null){
+      setConnectOne(false);
+    }else{
+      setConnectOne(true);
+    }
+  },3000)
+  
+  if(props.userTrue !== null && props.userTrue !== undefined && connectOne == false){
     dispatch(userTrueСhange(props.userTrue));
     setDisplayOn('none');
   }
-},[props.userTrue])
-
+  console.log(connectOne)
+ 
+},[props.userTrue,connectOne])
+console.log(props.userTrue)
 /*<Stack.Navigator  screenOptions={{headerShown: false}} >
         <Stack.Screen  name="Authorization" component={Authorization} initialParams = {{props}}/>   
         <Stack.Screen name="PasswordRecovery" component={PasswordRecovery} options={{headerShown: false,...TransitionPresets.FadeFromBottomAndroid}}/>
       </Stack.Navigator>*/
-  if(props.rezult == null){
+  if(props.rezult == null && connectOne == false){
     return (
     <View style={styles.MainPageMain}>
       <Stack.Navigator  screenOptions={{headerShown: false}} >

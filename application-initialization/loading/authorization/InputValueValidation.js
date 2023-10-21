@@ -118,8 +118,8 @@ function audioStatus(){
           blockOffsetVisibility();
           setLeftPosition('25%');
           break;
-        case  "ник обновлен удачно":
-          setTextError( 'Логин удачно изменен' );
+        case  "Установлен новый Ник":
+          setTextError( 'Установлен новый Ник' );
           blockOffsetVisibility();
           setLeftPosition('25%');
           break;

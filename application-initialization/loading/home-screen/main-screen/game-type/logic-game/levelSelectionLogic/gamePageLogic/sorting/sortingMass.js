@@ -168,10 +168,11 @@ const tableElemMendMass = ['Водород', 'Гелий', 'Литий', 'Бер
 "Мартин Ван Бюрен", "Уильям Гаррисон", "Джон Тилден", "Джеймс К. Полк", "Захария Таунсенд", "Джеймс Буч", "Абрахам Линкольн", "Эндрю Джонсон",
 "Уолтер Грант", "Рузвельт Рейган", "Джордж Буш Ст.", "Билл Клинтон", "Джордж Буш Мл.", "Барак Обама", "Дональд Трамп", "Джо Байден"];*/
 const layersEarth = ["Внутреннее ядро", "Внешнее ядро", "Мантия","Верхняя мантия", "Земная кора","Тропосфера", "Стратосфера", "Мезосфера", "Термосфера", "Эксосфера"];
-   
+const planetMass = ["Солнце", "Меркурий", "Венера","Земля", "Марс","Юпитер", "Сатурн", "Уран", "Нептун", "Плутон"];
+ 
   let massObj = [englishAlphabetMass,russianAlphabetMass,romanNumeralsMass,TimerIntervalMass,numberMass,horoscopeMass,
   monthsMass,ranksArmyMass,chineseHoroscopeMass,floorsMass,wagonsMass,cardsMass,dateCalendarMass,tableElemMendMass,
-  layersEarth];
+  layersEarth,planetMass];
 //
 //массивы выбранных элементов рандомно
 let  nullMass = [];

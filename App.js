@@ -34,26 +34,26 @@ const firebase = initializeApp(firebaseConfig);
 export default  function App() {
  
  // console.log(firebase.database().goOffline() )
-  const [displayOn, setDisplayOn] = useState();
+  
   const [rezult, setRezult] = useState(); 
   const [timbonSet, setTimbonSet] = useState(null);
   const [usersDoc, setUsersDoc] = useState(null);
   const [userValueUp, setUserValueUp] = useState(null);
-
+  
 //получения ключа пользователя для идентификации
 
 
 useEffect(()=>{
- 
+  
   onAuthStateChanged(auth, user => {
     //console.log(user)
     if (user) {
       const uid = user.uid;
-      
+     
       getUser();
       getStateUser();
       setRezult(uid);
-//входим в базу реалвремени  
+//входим в базу реалВремени  
       goOnline(db);
       
       //setTimeout(()=>{disconnect(database);;console.log(database);},5000)
@@ -95,12 +95,12 @@ useEffect(()=>{
     }
     timenew(); 
    });*/
-   setDisplayOn('none')
+   //setDisplayOn('none')
     } else {
-      setDisplayOn('none')
+      
+      //setDisplayOn('none')
     }
   }); 
-  
 },[])
 //получения данных timbon из базы
 async function getStateUser(){
@@ -158,25 +158,40 @@ async function setStateUser(e){
 //обновления данных Users в базе
 async function updateUsersDoc(u){
   
-  //console.log(u + '11111111')
-  
+  console.log(u + '11111111')
+   
   
   if(u !== null && userValueUp !== null){
     setUsersDoc(userValueUp)
     if(JSON.parse(userValueUp).name === JSON.parse(u).name){
       //console.log(u + 'update')
       //console.log(userValueUp + 'update1')
+      if(Number(JSON.parse(userValueUp).logickWordPart) != 0){
+        await  updateDoc(doc(dbF, "users", auth.currentUser.uid), {
+          logickWordPart: Number(JSON.parse(userValueUp).logickWordPart),
+        });  
+      }
+      if(Number(JSON.parse(userValueUp).logickSortingPart) != 0){
+        await  updateDoc(doc(dbF, "users", auth.currentUser.uid), {
+          logickSortingPart: Number(JSON.parse(userValueUp).logickSortingPart), 
+        });  
+      }
+      if(Number(JSON.parse(userValueUp).memoryBallsPart) != 0){
+        await  updateDoc(doc(dbF, "users", auth.currentUser.uid), {
+          memoryBallsPart: Number(JSON.parse(userValueUp).memoryBallsPart), 
+        });  
+      }
+      if(Number(JSON.parse(userValueUp).memoryFiguresPart) != 0){
+        await  updateDoc(doc(dbF, "users", auth.currentUser.uid), {
+          memoryFiguresPart: Number(JSON.parse(userValueUp).memoryFiguresPart), 
+        });  
+      }
       await  updateDoc(doc(dbF, "users", auth.currentUser.uid), {
         numberGames: Number(JSON.parse(userValueUp).numberGames),
         victory: Number(JSON.parse(userValueUp).victory),
         remembering: Number(JSON.parse(userValueUp).remembering),
         smartest: Number(JSON.parse(userValueUp).smartest),
-        logickWordPart: Number(JSON.parse(userValueUp).logickWordPart),
-        logickSortingPart: Number(JSON.parse(userValueUp).logickSortingPart), 
-        memoryFiguresPart: Number(JSON.parse(userValueUp).memoryFiguresPart),
-        memoryBallsPart: Number(JSON.parse(userValueUp).memoryBallsPart), 
       }); 
-
     }
   }else{
     setUsersDoc(u)
@@ -202,8 +217,9 @@ useEffect(()=>{
   } 
 },[usersDoc,timbonSet])
 useEffect(()=>{
-
+  
 },[usersDoc,timbonSet])
+
 //
 //обновления данных пользователя
 //установка значений в кэш
@@ -274,7 +290,7 @@ const styles = StyleSheet.create({
       <NavigationContainer >   
         
           <View style={styles.MainPage}>
-            <WaitingDownload displayStatus={displayOn} />
+            <WaitingDownload />
             <Loading rezult={rezult} userTrue = {timbonSet}/>
        
             <StatusBar  backgroundColor="transparent" hidden={true}/> 

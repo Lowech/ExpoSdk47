@@ -75,6 +75,13 @@ const removeValueUpdate = async () => {
     console.log(e)
   }
 }   
+const removeDateValue = async () => {
+  try {
+    await AsyncStorage.removeItem('@dateValue')
+  } catch(e) {
+    console.log(e)
+  }
+}  
 //чтение данных пользователя
 async function getUserValue() {
   try {
@@ -121,6 +128,7 @@ function logindelete(){
         removeValue();
         removeTimbon();
         removeValueUpdate();
+        removeDateValue();
         dispatch(userTrueСhange(1));
    signInWithEmailAndPassword(auth,email, password)
       .then((userCredential) => {

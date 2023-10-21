@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "backgroundColor": "#FFFFFF",
-      "image": "./assets/icon.png",
+      "image": "./assets/icons.png",
       "resizeMode": "contain"
     },
     "androidStatusBar": {
